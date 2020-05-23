@@ -1,3 +1,4 @@
+import 'package:ecoschedule/presentation/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class App extends StatelessWidget {
@@ -12,7 +13,7 @@ class App extends StatelessWidget {
         accentColor: Colors.grey[300],
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Container(),
+      home: HomeScreen(),
     );
   }
 }
