@@ -7,6 +7,10 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  intl: 0.16.1
+  collection: ^1.14.12
+  auto_size_text: ^2.1.0
+  http: ^0.12.1
   font_awesome_flutter: ^8.8.1
   bloc: ^3.0.0
   flutter_bloc: ^3.2.0

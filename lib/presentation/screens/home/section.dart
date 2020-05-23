@@ -27,7 +27,7 @@ class Section extends StatelessWidget {
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3, childAspectRatio: 1.618),
+              crossAxisCount: 2, childAspectRatio: 1.8),
         )
       ],
     );
