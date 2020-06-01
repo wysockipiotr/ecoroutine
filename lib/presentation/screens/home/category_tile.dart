@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:recase/recase.dart';
 
 class CategoryTile extends StatelessWidget {
   final WasteDisposal disposal;
@@ -26,13 +27,8 @@ class CategoryTile extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.0),
               child: AutoSizeText(
-                this.disposal.name,
+                this.disposal.name.sentenceCase,
                 maxLines: 2,
-                // stepGranularity: 3,
-                // maxFontSize: 12,
-                // minFontSize: 7,
-                // softWrap: true,
-                // overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.monda(),
               ),

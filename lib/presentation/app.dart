@@ -8,11 +8,11 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'ecoschedule',
       theme: ThemeData(
-        brightness: Brightness.dark,
-        primarySwatch: Colors.grey,
-        accentColor: Colors.grey[300],
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+          brightness: Brightness.dark,
+          primarySwatch: Colors.grey,
+          accentColor: Colors.grey[300],
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          textSelectionHandleColor: Colors.grey),
       home: HomeScreen(),
     );
   }

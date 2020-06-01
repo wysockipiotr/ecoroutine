@@ -1,31 +1,30 @@
+import 'package:ecoschedule/domain/location.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LocationTile extends StatelessWidget {
-  final String name;
-  final String address;
+  final Location location;
 
-  const LocationTile({this.name, this.address});
+  const LocationTile({this.location});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: EdgeInsets.all(24.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Icon(Icons.home),
-            SizedBox(
-              width: 24.0,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[Text(name), Text(address)],
-            )
-          ],
+    return ListTile(
+        onTap: () {},
+        contentPadding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+        title: Text(
+          location.name,
+          style: GoogleFonts.monda(),
         ),
-      ),
-    );
+        subtitle: Text(
+          "${location.city}, ${location.street} ${location.houseNumber}",
+          style: GoogleFonts.monda(),
+        ),
+        leading: CircleAvatar(
+          child: Text(
+            location.street.substring(0, 2).toUpperCase(),
+            style: GoogleFonts.monda(),
+          ),
+        ));
   }
 }
