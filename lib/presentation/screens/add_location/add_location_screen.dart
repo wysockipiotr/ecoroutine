@@ -1,7 +1,8 @@
+import 'package:ecoschedule/presentation/screens/add_location/address_details_step.dart';
 import 'package:ecoschedule/presentation/screens/add_location/address_step.dart';
 import 'package:ecoschedule/presentation/screens/add_location/bloc.dart';
 import 'package:ecoschedule/presentation/screens/add_location/city_step.dart';
-import 'package:ecoschedule/presentation/screens/add_location/save_location_step.dart';
+import 'package:ecoschedule/presentation/screens/add_location/name_location_step.dart';
 import 'package:ecoschedule/presentation/screens/add_location/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,6 +32,13 @@ class AddLocationScreen extends StatelessWidget {
   }
 
   List<Step> _buildSteps(AddLocationState state) {
+    StepState addressDetailsStepState = StepState.disabled;
+    if (state.stepIndex == 2) {
+      addressDetailsStepState = StepState.indexed;
+    } else if (state.stepIndex > 2) {
+      addressDetailsStepState = StepState.complete;
+    }
+
     return [
       Step(
           title: const Text("City"),
@@ -50,24 +58,8 @@ class AddLocationScreen extends StatelessWidget {
           title: const Text("Address details"),
           subtitle: const Text("Not required for this address"),
           isActive: state.stepIndex == 2,
-          state:
-              (state.stepIndex >= 3) ? StepState.complete : StepState.indexed,
-          content: Column(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(20),
-                child: Builder(
-                  builder: (context) {
-                    if (state is SpecifyAddressDetailsStep) {
-                      return Text(state.selectedStreetIds);
-                    } else {
-                      return Container();
-                    }
-                  },
-                ),
-              )
-            ],
-          )),
+          state: addressDetailsStepState,
+          content: AddressDetailsStep()),
       Step(
           title: const Text("Notifications setup"),
           subtitle: const Text("Premium feature"),
@@ -77,8 +69,10 @@ class AddLocationScreen extends StatelessWidget {
           )),
       Step(
           title: const Text("Location name"),
-          state: StepState.indexed,
-          content: SaveLocationStep()),
+          state:
+              (state.stepIndex >= 4) ? StepState.complete : StepState.indexed,
+          isActive: state.stepIndex == 4,
+          content: NameLocationStep()),
     ];
   }
 

@@ -54,7 +54,7 @@ Future<SchedulePeriod> getSchedulePeriods({String cityId}) async {
   });
 }
 
-Future<String> getStreets(
+Future<List<Street>> getStreets(
     {@required String cityId,
     @required String schedulePeriodId,
     String streetName = "",
@@ -65,10 +65,16 @@ Future<String> getStreets(
       "$BASE_URL?action=getStreets&townId=$cityId&schedulePeriodId=$schedulePeriodId&streetName=$streetName&number=$houseNumber&groupId=1&choosedStreetIds=$streetIdsParam";
   final response = await http.post(url);
   if (response.statusCode != 200) {
-    return "error";
+    return [];
   }
   final Map payload = json.decode(utf8.decode(response.bodyBytes));
-  return payload.toString();
+
+  return List<Street>.from(payload["streets"].map((street) => Street(
+      id: street["id"],
+      name: street["name"],
+      sides: street["sides"],
+      group: street["g1"],
+      numbers: street["numbers"].split(","))));
 }
 
 Future<List<StreetIds>> getStreetIds(

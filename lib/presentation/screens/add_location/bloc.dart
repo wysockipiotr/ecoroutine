@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:ecoschedule/data/services/location.dart';
+import 'package:ecoschedule/domain/street.dart';
 import 'package:ecoschedule/presentation/screens/add_location/events.dart';
 import 'package:ecoschedule/presentation/screens/add_location/states.dart';
 
@@ -26,12 +27,19 @@ class AddLocationBloc extends Bloc<AddLocationEvent, AddLocationState> {
       final schedulePeriodId =
           await getSchedulePeriods(cityId: selectedCity.id);
 
-      String data = await getStreets(
+      List<Street> data = await getStreets(
           schedulePeriodId: schedulePeriodId.id,
           streetIds: event.selectedStreetIds.ids,
           houseNumber: event.selectedHouseNumber,
           cityId: selectedCity.id);
-      yield SpecifyAddressDetailsStep(selectedStreetIds: data);
+
+      if (data.isEmpty) {
+      } else if (data.length == 1) {
+        yield NameLocationState(
+            houseNumber: event.selectedHouseNumber, streetId: data.first.id);
+      } else {
+        yield SpecifyAddressDetailsState(selectedStreetIds: "...");
+      }
     }
   }
 }

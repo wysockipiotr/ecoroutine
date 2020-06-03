@@ -27,14 +27,27 @@ class SelectStreetState extends AddLocationState {
   int get stepIndex => 1;
 }
 
-class SpecifyAddressDetailsStep extends AddLocationState {
+class SpecifyAddressDetailsState extends AddLocationState {
   final String selectedStreetIds;
 
-  const SpecifyAddressDetailsStep({this.selectedStreetIds});
+  const SpecifyAddressDetailsState({this.selectedStreetIds});
 
   @override
   List<Object> get props => [selectedStreetIds];
 
   @override
   int get stepIndex => 2;
+}
+
+class NameLocationState extends AddLocationState {
+  final String streetId;
+  final String houseNumber;
+
+  const NameLocationState({this.streetId, this.houseNumber});
+
+  @override
+  List<Object> get props => [streetId, houseNumber];
+
+  @override
+  int get stepIndex => 4;
 }
