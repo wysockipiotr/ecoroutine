@@ -101,9 +101,8 @@ class _AddressStepState extends State<AddressStep> {
       },
       suggestionsCallback: (String pattern) async {
         if (pattern.length < 1) {
-          return const <StreetIds>[];
+          return null;
         }
-
         final schedulePeriod =
             await getSchedulePeriods(cityId: state.selectedCity.id);
 
