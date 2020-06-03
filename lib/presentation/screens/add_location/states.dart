@@ -26,3 +26,15 @@ class SelectStreetState extends AddLocationState {
   @override
   int get stepIndex => 1;
 }
+
+class SpecifyAddressDetailsStep extends AddLocationState {
+  final String selectedStreetIds;
+
+  const SpecifyAddressDetailsStep({this.selectedStreetIds});
+
+  @override
+  List<Object> get props => [selectedStreetIds];
+
+  @override
+  int get stepIndex => 2;
+}

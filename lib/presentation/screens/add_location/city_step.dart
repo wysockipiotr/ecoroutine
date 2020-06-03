@@ -2,11 +2,10 @@ import 'package:ecoschedule/data/services/location.dart';
 import 'package:ecoschedule/domain/city.dart';
 import 'package:ecoschedule/presentation/screens/add_location/bloc.dart';
 import 'package:ecoschedule/presentation/screens/add_location/events.dart';
+import 'package:ecoschedule/presentation/screens/add_location/no_items_placeholder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class CityStep extends StatefulWidget {
   const CityStep({Key key}) : super(key: key);
@@ -36,7 +35,7 @@ class _CityStepState extends State<CityStep> {
             focusNode: _focusNode,
             controller: _controller,
             decoration: InputDecoration(
-                labelText: "Enter city name",
+                labelText: "City",
                 prefixIcon: Icon(Icons.location_city),
                 filled: true)),
         suggestionsCallback: (String pattern) async {
@@ -64,19 +63,8 @@ class _CityStepState extends State<CityStep> {
         noItemsFoundBuilder: _buildNoItemsPlaceholder);
   }
 
-  Widget _buildNoItemsPlaceholder(BuildContext context) => Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            FaIcon(FontAwesomeIcons.solidSadCry, size: 48),
-            SizedBox(
-              height: 16,
-            ),
-            Text("No cities found", style: GoogleFonts.monda(fontSize: 24))
-          ],
-        ),
-      );
+  Widget _buildNoItemsPlaceholder(BuildContext context) =>
+      NoItemsPlaceholder(message: "No cities found");
 
   @override
   void dispose() {

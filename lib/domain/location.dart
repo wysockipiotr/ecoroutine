@@ -18,3 +18,4 @@ class Location {
       @required this.houseNumber,
       this.isActive = true});
 }
+

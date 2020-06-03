@@ -10,6 +10,7 @@ class App extends StatelessWidget {
       theme: ThemeData(
           brightness: Brightness.dark,
           primarySwatch: Colors.grey,
+          errorColor: Colors.red[300],
           accentColor: Colors.grey[300],
           visualDensity: VisualDensity.adaptivePlatformDensity,
           textSelectionHandleColor: Colors.grey),

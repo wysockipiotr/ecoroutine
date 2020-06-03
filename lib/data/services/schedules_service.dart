@@ -19,7 +19,7 @@ class WasteDisposal {
 const BASE_URL = "https://ecoharmonogram.pl/api/api.php";
 
 Future<List<WasteDisposal>> getSchedule(
-    {String streetId = "1626721",
+    {String streetId = "1690930",
     String houseNumber = "1",
     bool futureOnly = true}) async {
   final response = await http.post(
