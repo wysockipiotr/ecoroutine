@@ -22,7 +22,6 @@ class AddLocationBloc extends Bloc<AddLocationEvent, AddLocationState> {
   Stream<AddLocationState> _mapStreetSelectedToState(
       StreetSelectedEvent event) async* {
     if (state is SelectStreetState) {
-      print("I'm here");
       final selectedCity = (state as SelectStreetState).selectedCity;
       final schedulePeriodId =
           await getSchedulePeriods(cityId: selectedCity.id);

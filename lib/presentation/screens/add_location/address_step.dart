@@ -61,10 +61,8 @@ class _AddressStepState extends State<AddressStep> {
               color: Theme.of(context).primaryColor,
               child: Text("Next"),
               onPressed: () {
-                print("hello");
                 if (this.selectedStreetIds != null &&
                     _houseNumberFieldController.text.isNotEmpty) {
-                  print("hello");
                   bloc.add(StreetSelectedEvent(
                       selectedHouseNumber: _houseNumberFieldController.text,
                       selectedStreetIds: selectedStreetIds));
@@ -94,7 +92,6 @@ class _AddressStepState extends State<AddressStep> {
       onSuggestionSelected: (StreetIds suggestion) {
         _streetFieldController.text = suggestion.name;
         _houseNumberFocusNode.requestFocus();
-
         selectedStreetIds = suggestion;
       },
       itemBuilder: (context, itemData) {
