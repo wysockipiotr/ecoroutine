@@ -49,5 +49,5 @@ class NameLocationState extends AddLocationState {
   List<Object> get props => [streetId, houseNumber];
 
   @override
-  int get stepIndex => 4;
+  int get stepIndex => 3;
 }

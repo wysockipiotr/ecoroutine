@@ -61,17 +61,10 @@ class AddLocationScreen extends StatelessWidget {
           state: addressDetailsStepState,
           content: AddressDetailsStep()),
       Step(
-          title: const Text("Notifications setup"),
-          subtitle: const Text("Premium feature"),
-          state: StepState.disabled,
-          content: Column(
-            children: <Widget>[],
-          )),
-      Step(
           title: const Text("Location name"),
           state:
-              (state.stepIndex >= 4) ? StepState.complete : StepState.indexed,
-          isActive: state.stepIndex == 4,
+              (state.stepIndex >= 3) ? StepState.complete : StepState.indexed,
+          isActive: state.stepIndex == 3,
           content: NameLocationStep()),
     ];
   }
