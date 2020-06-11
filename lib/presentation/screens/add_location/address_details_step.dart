@@ -17,6 +17,7 @@ class AddressDetailsStep extends StatefulWidget {
 class _AddressDetailsStep extends State<AddressDetailsStep> {
   String _selectedSides;
   String _selectedGroup;
+  bool _touched = false;
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +39,13 @@ class _AddressDetailsStep extends State<AddressDetailsStep> {
     final groupVariants =
         streetCandidates.map((candidate) => candidate.group).toSet();
 
-    if (sidesVariants.length > 1) {
-      _selectedSides = sidesVariants.first;
-    }
-    if (groupVariants.length > 1) {
-      _selectedGroup = groupVariants.first;
+    if (!_touched) {
+      if (sidesVariants.length > 1) {
+        _selectedSides = sidesVariants.first;
+      }
+      if (groupVariants.length > 1) {
+        _selectedGroup = groupVariants.first;
+      }
     }
 
     return Column(
@@ -52,6 +55,7 @@ class _AddressDetailsStep extends State<AddressDetailsStep> {
           DropdownButtonFormField(
             onChanged: (String sides) {
               setState(() {
+                _touched = true;
                 _selectedSides = sides;
               });
             },
@@ -71,6 +75,7 @@ class _AddressDetailsStep extends State<AddressDetailsStep> {
           DropdownButtonFormField(
             onChanged: (String group) {
               setState(() {
+                _touched = true;
                 _selectedGroup = group;
               });
             },
