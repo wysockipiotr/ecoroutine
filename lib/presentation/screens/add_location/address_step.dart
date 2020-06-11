@@ -6,6 +6,7 @@ import 'package:ecoschedule/presentation/screens/add_location/state/add_location
 import 'package:ecoschedule/presentation/screens/add_location/state/add_location_events.dart';
 import 'package:ecoschedule/presentation/screens/add_location/state/add_location_state.dart';
 import 'package:ecoschedule/presentation/screens/add_location/state/add_location_step.dart';
+import 'package:ecoschedule/utils/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -75,8 +76,7 @@ class _AddressStepState extends State<AddressStep> {
     return TypeAheadFormField(
       textFieldConfiguration: TextFieldConfiguration(
           inputFormatters: [
-            WhitelistingTextInputFormatter(
-                RegExp("[^\u0000-\u007F]|[a-zA-Z0-9 ]")),
+            WhitelistingTextInputFormatter(RegExp(STREET_NAME_REGEX)),
           ],
           textCapitalization: TextCapitalization.words,
           controller: _streetFieldController,
@@ -120,7 +120,7 @@ class _AddressStepState extends State<AddressStep> {
       focusNode: _houseNumberFocusNode,
       autofocus: true,
       inputFormatters: [
-        WhitelistingTextInputFormatter(RegExp("[a-zA-Z0-9/]")),
+        WhitelistingTextInputFormatter(RegExp(HOUSE_NUMBER_REGEX)),
         UpperCaseTextFormatter()
       ],
       decoration: InputDecoration(
