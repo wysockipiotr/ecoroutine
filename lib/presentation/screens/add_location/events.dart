@@ -27,3 +27,5 @@ class StreetSelectedEvent extends AddLocationEvent {
   @override
   List<Object> get props => [selectedStreetIds, selectedHouseNumber];
 }
+
+class DetailsSelectedEvent extends AddLocationEvent {}

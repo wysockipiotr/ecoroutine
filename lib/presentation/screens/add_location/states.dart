@@ -1,4 +1,5 @@
 import 'package:ecoschedule/domain/city.dart';
+import 'package:ecoschedule/domain/street.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class AddLocationState extends Equatable {
@@ -28,12 +29,12 @@ class SelectStreetState extends AddLocationState {
 }
 
 class SpecifyAddressDetailsState extends AddLocationState {
-  final String selectedStreetIds;
+  final List<Street> streetVariants;
 
-  const SpecifyAddressDetailsState({this.selectedStreetIds});
+  const SpecifyAddressDetailsState({this.streetVariants});
 
   @override
-  List<Object> get props => [selectedStreetIds];
+  List<Object> get props => [streetVariants];
 
   @override
   int get stepIndex => 2;

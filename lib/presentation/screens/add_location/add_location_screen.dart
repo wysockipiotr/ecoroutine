@@ -11,24 +11,23 @@ class AddLocationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => AddLocationBloc(),
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).canvasColor,
-          title: const Text("Add location"),
-          centerTitle: true,
-        ),
-        body: Column(
-          children: <Widget>[
-            Expanded(
-              child: BlocBuilder<AddLocationBloc, AddLocationState>(
-                  builder: (BuildContext context, AddLocationState state) =>
-                      _buildStepper(state)),
-            )
-          ],
-        ),
-      ),
-    );
+        create: (BuildContext context) => AddLocationBloc(),
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Theme.of(context).canvasColor,
+            title: const Text("Add location"),
+            centerTitle: true,
+          ),
+          body: Column(
+            children: <Widget>[
+              Expanded(
+                child: BlocBuilder<AddLocationBloc, AddLocationState>(
+                    builder: (BuildContext context, AddLocationState state) =>
+                        _buildStepper(state)),
+              )
+            ],
+          ),
+        ));
   }
 
   List<Step> _buildSteps(AddLocationState state) {
@@ -56,7 +55,9 @@ class AddLocationScreen extends StatelessWidget {
           content: AddressStep()),
       Step(
           title: const Text("Address details"),
-          subtitle: const Text("Not required for this address"),
+          subtitle: (state.stepIndex >= 2)
+              ? null
+              : const Text("Not required for this address"),
           isActive: state.stepIndex == 2,
           state: addressDetailsStepState,
           content: AddressDetailsStep()),

@@ -57,18 +57,18 @@ class _AddressStepState extends State<AddressStep> {
             SizedBox(
               height: 16,
             ),
-            RaisedButton(
-              color: Theme.of(context).primaryColor,
-              child: Text("Next"),
-              onPressed: () {
-                if (this.selectedStreetIds != null &&
-                    _houseNumberFieldController.text.isNotEmpty) {
-                  bloc.add(StreetSelectedEvent(
-                      selectedHouseNumber: _houseNumberFieldController.text,
-                      selectedStreetIds: selectedStreetIds));
-                }
-              },
-            )
+            RaisedButton.icon(
+                icon: Icon(Icons.arrow_forward),
+                onPressed: () {
+                  if (this.selectedStreetIds != null &&
+                      _houseNumberFieldController.text.isNotEmpty) {
+                    bloc.add(StreetSelectedEvent(
+                        selectedHouseNumber: _houseNumberFieldController.text,
+                        selectedStreetIds: selectedStreetIds));
+                  }
+                },
+                color: Theme.of(context).primaryColor,
+                label: Text("Next")),
           ],
         );
       }
