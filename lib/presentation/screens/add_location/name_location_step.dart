@@ -1,5 +1,6 @@
-import 'package:ecoschedule/presentation/screens/add_location/bloc.dart';
-import 'package:ecoschedule/presentation/screens/add_location/states.dart';
+import 'package:ecoschedule/presentation/screens/add_location/state/add_location_bloc.dart';
+import 'package:ecoschedule/presentation/screens/add_location/state/add_location_state.dart';
+import 'package:ecoschedule/presentation/screens/add_location/state/add_location_step.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,12 +17,13 @@ class _NameLocationStepState extends State<NameLocationStep> {
   Widget build(BuildContext context) {
     return BlocBuilder<AddLocationBloc, AddLocationState>(
         builder: (context, state) {
-      if (state is NameLocationState) {
+      if (state.currentStep == AddLocationStep.NameLocation) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
             TextFormField(
               controller: _controller,
+              autofocus: true,
               decoration: InputDecoration(
                   labelText: "Name",
                   prefixIcon: Icon(Icons.home),
@@ -34,7 +36,7 @@ class _NameLocationStepState extends State<NameLocationStep> {
                 onPressed: () {
                   Scaffold.of(context).showSnackBar(SnackBar(
                     duration: Duration(seconds: 1),
-                    content: Text("Saving location...",
+                    content: Text("Saving ${_controller.text}...",
                         style: TextStyle(color: Theme.of(context).accentColor)),
                     backgroundColor: Theme.of(context).primaryColor,
                   ));

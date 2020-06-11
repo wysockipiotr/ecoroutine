@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:ecoschedule/data/services/schedules_service.dart';
 import 'package:ecoschedule/domain/disposal_type.dart';
+import 'package:ecoschedule/domain/waste_disposal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

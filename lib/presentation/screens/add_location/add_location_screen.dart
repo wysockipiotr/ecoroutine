@@ -1,11 +1,13 @@
 import 'package:ecoschedule/presentation/screens/add_location/address_details_step.dart';
 import 'package:ecoschedule/presentation/screens/add_location/address_step.dart';
-import 'package:ecoschedule/presentation/screens/add_location/bloc.dart';
-import 'package:ecoschedule/presentation/screens/add_location/city_step.dart';
 import 'package:ecoschedule/presentation/screens/add_location/name_location_step.dart';
-import 'package:ecoschedule/presentation/screens/add_location/states.dart';
+import 'package:ecoschedule/presentation/screens/add_location/state/add_location_bloc.dart';
+import 'package:ecoschedule/presentation/screens/add_location/state/add_location_state.dart';
+import 'package:ecoschedule/presentation/screens/add_location/state/add_location_step.dart';
+import 'package:ecoschedule/presentation/screens/add_location/town_step.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:recase/recase.dart';
 
 class AddLocationScreen extends StatelessWidget {
   @override
@@ -32,40 +34,62 @@ class AddLocationScreen extends StatelessWidget {
 
   List<Step> _buildSteps(AddLocationState state) {
     StepState addressDetailsStepState = StepState.disabled;
-    if (state.stepIndex == 2) {
+    if (state.currentStep == AddLocationStep.SelectDetails) {
       addressDetailsStepState = StepState.indexed;
-    } else if (state.stepIndex > 2) {
-      addressDetailsStepState = StepState.complete;
+    } else if (state.currentStep.index > AddLocationStep.SelectDetails.index) {
+      if (state.sides != null || state.group != null) {
+        addressDetailsStepState = StepState.complete;
+      }
+    }
+
+    String detailsStepSubtitle = "Not required for this address";
+    if (state.currentStep == AddLocationStep.SelectDetails) {
+      detailsStepSubtitle = "";
+    }
+    if (state.currentStep.index > AddLocationStep.SelectDetails.index) {
+      final subtitleParts = [
+        if (state.sides != null) state.sides.titleCase,
+        if (state.group != null) state.group
+      ];
+
+      if (subtitleParts.isNotEmpty) {
+        detailsStepSubtitle = subtitleParts.join(", ");
+      }
     }
 
     return [
       Step(
-          title: const Text("City"),
+          title: const Text("Town"),
           subtitle:
-              state is SelectStreetState ? Text(state.selectedCity.name) : null,
-          isActive: state.stepIndex == 0,
-          state:
-              (state.stepIndex >= 1) ? StepState.complete : StepState.indexed,
-          content: CityStep()),
+              state.selectedTown != null ? Text(state.selectedTown.name) : null,
+          isActive: state.currentStep == AddLocationStep.SelectTown,
+          state: (state.currentStep.index >= AddLocationStep.SelectTown.index)
+              ? StepState.complete
+              : StepState.indexed,
+          content: TownStep()),
       Step(
           title: const Text("Address"),
-          isActive: state.stepIndex == 1,
-          state:
-              (state.stepIndex >= 2) ? StepState.complete : StepState.indexed,
+          subtitle:
+              state.streetName != null && state.selectedHouseNumber != null
+                  ? Text("${state.streetName} ${state.selectedHouseNumber}")
+                  : null,
+          isActive: state.currentStep == AddLocationStep.EnterAddress,
+          state: (state.currentStep.index >= AddLocationStep.EnterAddress.index)
+              ? StepState.complete
+              : StepState.indexed,
           content: AddressStep()),
       Step(
-          title: const Text("Address details"),
-          subtitle: (state.stepIndex >= 2)
-              ? null
-              : const Text("Not required for this address"),
-          isActive: state.stepIndex == 2,
+          title: const Text("Details"),
+          subtitle: Text(detailsStepSubtitle),
+          isActive: state.currentStep == AddLocationStep.SelectDetails,
           state: addressDetailsStepState,
           content: AddressDetailsStep()),
       Step(
-          title: const Text("Location name"),
-          state:
-              (state.stepIndex >= 3) ? StepState.complete : StepState.indexed,
-          isActive: state.stepIndex == 3,
+          title: const Text("Name"),
+          state: (state.currentStep.index >= AddLocationStep.NameLocation.index)
+              ? StepState.complete
+              : StepState.indexed,
+          isActive: state.currentStep == AddLocationStep.NameLocation,
           content: NameLocationStep()),
     ];
   }
@@ -73,7 +97,7 @@ class AddLocationScreen extends StatelessWidget {
   Stepper _buildStepper(AddLocationState state) {
     return Stepper(
       steps: _buildSteps(state),
-      currentStep: state.stepIndex,
+      currentStep: state.currentStep.index,
       controlsBuilder: (BuildContext context,
           {VoidCallback onStepContinue, VoidCallback onStepCancel}) {
         return Container();

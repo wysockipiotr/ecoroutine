@@ -1,4 +1,5 @@
-import 'package:ecoschedule/data/services/schedules_service.dart';
+import 'package:ecoschedule/data/services/api/schedules.dart';
+import 'package:ecoschedule/domain/waste_disposal.dart';
 import 'package:ecoschedule/presentation/screens/home/category_tile.dart';
 import 'package:ecoschedule/presentation/screens/home/section.dart';
 import 'package:ecoschedule/presentation/screens/locations_list/location_list_screen.dart';

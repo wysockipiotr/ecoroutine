@@ -2,21 +2,10 @@ import 'dart:convert';
 import 'dart:ui';
 
 import "package:collection/collection.dart";
+import 'package:ecoschedule/data/services/api/api.dart';
+import 'package:ecoschedule/domain/waste_disposal.dart';
 import 'package:ecoschedule/utils/color.dart';
 import "package:http/http.dart" as http;
-
-class WasteDisposal {
-  final DateTime date;
-  final String name;
-  final Color color;
-
-  const WasteDisposal({this.name, this.color, this.date});
-
-  @override
-  String toString() => "WasteDisposal($name, $date)";
-}
-
-const BASE_URL = "https://ecoharmonogram.pl/api/api.php";
 
 Future<List<WasteDisposal>> getSchedule(
     {String streetId = "1690930",

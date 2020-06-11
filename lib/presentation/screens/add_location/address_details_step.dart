@@ -1,8 +1,9 @@
 import 'dart:collection';
 
-import 'package:ecoschedule/presentation/screens/add_location/bloc.dart';
-import 'package:ecoschedule/presentation/screens/add_location/events.dart';
-import 'package:ecoschedule/presentation/screens/add_location/states.dart';
+import 'package:ecoschedule/presentation/screens/add_location/state/add_location_bloc.dart';
+import 'package:ecoschedule/presentation/screens/add_location/state/add_location_events.dart';
+import 'package:ecoschedule/presentation/screens/add_location/state/add_location_state.dart';
+import 'package:ecoschedule/presentation/screens/add_location/state/add_location_step.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +22,7 @@ class _AddressDetailsStep extends State<AddressDetailsStep> {
   Widget build(BuildContext context) {
     return BlocBuilder<AddLocationBloc, AddLocationState>(
         builder: (BuildContext context, AddLocationState state) {
-      if (state is SpecifyAddressDetailsState) {
+      if (state.currentStep == AddLocationStep.SelectDetails) {
         return _buildDetailsDropdowns(state);
       } else {
         return Container();
@@ -29,19 +30,19 @@ class _AddressDetailsStep extends State<AddressDetailsStep> {
     });
   }
 
-  Widget _buildDetailsDropdowns(SpecifyAddressDetailsState state) {
-    final sidesVariants = SplayTreeSet<String>.from(
-        state.streetVariants.map((street) => street.sides));
-    final groupVariants = SplayTreeSet<String>.from(
-        state.streetVariants.map((street) => street.group));
+  Widget _buildDetailsDropdowns(AddLocationState state) {
+    final streetCandidates = state.streetCandidates;
 
-    if (sidesVariants == null && groupVariants == null) {
-      if (sidesVariants.length > 1) {
-        _selectedSides = sidesVariants.first;
-      }
-      if (groupVariants.length > 1) {
-        _selectedGroup = groupVariants.first;
-      }
+    final sidesVariants =
+        streetCandidates.map((candidate) => candidate.sides).toSet();
+    final groupVariants =
+        streetCandidates.map((candidate) => candidate.group).toSet();
+
+    if (sidesVariants.length > 1) {
+      _selectedSides = sidesVariants.first;
+    }
+    if (groupVariants.length > 1) {
+      _selectedGroup = groupVariants.first;
     }
 
     return Column(
@@ -88,8 +89,9 @@ class _AddressDetailsStep extends State<AddressDetailsStep> {
         ),
         RaisedButton.icon(
             onPressed: () {
-              BlocProvider.of<AddLocationBloc>(context)
-                  .add(DetailsSelectedEvent());
+              BlocProvider.of<AddLocationBloc>(context).add(
+                  DetailsSelectedEvent(
+                      sides: _selectedSides, group: _selectedGroup));
             },
             color: Theme.of(context).primaryColor,
             icon: Icon(Icons.arrow_forward),

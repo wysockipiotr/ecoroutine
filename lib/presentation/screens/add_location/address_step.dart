@@ -1,10 +1,11 @@
-import 'package:ecoschedule/data/services/location.dart';
-import 'package:ecoschedule/domain/city.dart';
-import 'package:ecoschedule/domain/street.dart';
-import 'package:ecoschedule/presentation/screens/add_location/bloc.dart';
-import 'package:ecoschedule/presentation/screens/add_location/events.dart';
+import 'package:ecoschedule/data/services/api/schedule_period.dart';
+import 'package:ecoschedule/data/services/api/street.dart';
+import 'package:ecoschedule/domain/street_query_result.dart';
 import 'package:ecoschedule/presentation/screens/add_location/no_items_placeholder.dart';
-import 'package:ecoschedule/presentation/screens/add_location/states.dart';
+import 'package:ecoschedule/presentation/screens/add_location/state/add_location_bloc.dart';
+import 'package:ecoschedule/presentation/screens/add_location/state/add_location_events.dart';
+import 'package:ecoschedule/presentation/screens/add_location/state/add_location_state.dart';
+import 'package:ecoschedule/presentation/screens/add_location/state/add_location_step.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,10 +13,6 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AddressStep extends StatefulWidget {
-  final City city;
-
-  const AddressStep({Key key, this.city}) : super(key: key);
-
   @override
   State<StatefulWidget> createState() => _AddressStepState();
 }
@@ -37,15 +34,13 @@ class _AddressStepState extends State<AddressStep> {
 
   final _houseNumberFocusNode = FocusNode();
 
-  StreetIds selectedStreetIds;
+  StreetIdsQueryResult selectedStreetIds;
 
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<AddLocationBloc>(context);
-
     return BlocBuilder<AddLocationBloc, AddLocationState>(
         builder: (BuildContext context, AddLocationState state) {
-      if (state is SelectStreetState) {
+      if (state.currentStep == AddLocationStep.EnterAddress) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
@@ -62,9 +57,9 @@ class _AddressStepState extends State<AddressStep> {
                 onPressed: () {
                   if (this.selectedStreetIds != null &&
                       _houseNumberFieldController.text.isNotEmpty) {
-                    bloc.add(StreetSelectedEvent(
-                        selectedHouseNumber: _houseNumberFieldController.text,
-                        selectedStreetIds: selectedStreetIds));
+                    BlocProvider.of<AddLocationBloc>(context).add(
+                        StreetSelectedEvent(selectedStreetIds,
+                            _houseNumberFieldController.text));
                   }
                 },
                 color: Theme.of(context).primaryColor,
@@ -76,7 +71,7 @@ class _AddressStepState extends State<AddressStep> {
     });
   }
 
-  Widget _buildStreetFormField(SelectStreetState state) {
+  Widget _buildStreetFormField(AddLocationState state) {
     return TypeAheadFormField(
       textFieldConfiguration: TextFieldConfiguration(
           inputFormatters: [
@@ -89,7 +84,7 @@ class _AddressStepState extends State<AddressStep> {
               labelText: "Street",
               prefixIcon: Icon(FontAwesomeIcons.mapSigns, size: 18),
               filled: true)),
-      onSuggestionSelected: (StreetIds suggestion) {
+      onSuggestionSelected: (StreetIdsQueryResult suggestion) {
         _streetFieldController.text = suggestion.name;
         _houseNumberFocusNode.requestFocus();
         selectedStreetIds = suggestion;
@@ -104,10 +99,10 @@ class _AddressStepState extends State<AddressStep> {
           return null;
         }
         final schedulePeriod =
-            await getSchedulePeriods(cityId: state.selectedCity.id);
+            await getSchedulePeriods(townId: state.selectedTown.id);
 
         final streetNamesToIds = await getStreetIds(
-            cityId: state.selectedCity.id,
+            townId: state.selectedTown.id,
             streetNamePattern: pattern,
             schedulePeriodId: schedulePeriod.id);
 
@@ -118,7 +113,7 @@ class _AddressStepState extends State<AddressStep> {
     );
   }
 
-  Widget _buildHouseNumberFormField(SelectStreetState state) {
+  Widget _buildHouseNumberFormField(AddLocationState state) {
     return TextFormField(
       controller: _houseNumberFieldController,
       focusNode: _houseNumberFocusNode,
