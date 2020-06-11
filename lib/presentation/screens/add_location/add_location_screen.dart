@@ -57,11 +57,21 @@ class AddLocationScreen extends StatelessWidget {
       }
     }
 
+    String townStepSubtitle = "";
+    if (state.selectedTown != null) {
+      final subtitleParts = [
+        state.selectedTown.name,
+        if (state.selectedTown.name != state.selectedTown.district)
+          state.selectedTown.district,
+        state.selectedTown.province
+      ];
+      townStepSubtitle = subtitleParts.join(", ");
+    }
+
     return [
       Step(
           title: const Text("Town"),
-          subtitle:
-              state.selectedTown != null ? Text(state.selectedTown.name) : null,
+          subtitle: Text(townStepSubtitle),
           isActive: state.currentStep == AddLocationStep.SelectTown,
           state: (state.currentStep.index > AddLocationStep.SelectTown.index)
               ? StepState.complete
