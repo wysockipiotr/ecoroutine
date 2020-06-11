@@ -7,6 +7,9 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  path: ^1.7.0
+  path_provider: ^1.6.10
+  sembast: ^2.4.4+3
   equatable: ^1.2.0
   dropdown_formfield: ^0.1.2
   flutter_svg: 0.17.4

@@ -1,21 +1,60 @@
+import 'package:ecoschedule/domain/town.dart';
 import 'package:flutter/foundation.dart';
 
 class Location {
+  final int id;
   final String name;
-  final String city;
-  final String cityId;
-  final String street;
-  final String streetId;
+  final Town town;
+  final String streetName;
   final String houseNumber;
-  final bool isActive;
+  final String sides;
+  final String group;
 
   const Location(
-      {this.name,
-      @required this.cityId,
-      this.city,
-      @required this.streetId,
-      this.street,
+      {this.id,
+      @required this.name,
+      @required this.town,
+      @required this.streetName,
       @required this.houseNumber,
-      this.isActive = true});
-}
+      this.sides,
+      this.group});
 
+  @override
+  String toString() =>
+      "Location { $id, $name, $town, $streetName $houseNumber, $sides, $group }";
+
+  Location copyWithId(int id) => Location(
+      id: id,
+      name: name,
+      town: town,
+      streetName: streetName,
+      houseNumber: houseNumber,
+      sides: sides,
+      group: group);
+
+  Map<String, dynamic> toMap() => {
+        "name": name,
+        "town": {
+          "id": town.id,
+          "name": town.name,
+          "district": town.district,
+          "province": town.province
+        },
+        "streetName": streetName,
+        "houseNumber": houseNumber,
+        "sides": sides,
+        "group": group
+      };
+
+  static Location fromMap(Map<String, dynamic> m) => Location(
+      name: m["name"],
+      town: Town(
+          id: m["town"]["id"],
+          name: m["town"]["name"],
+          district: m["town"]["district"],
+          province: m["town"]["province"]),
+      streetName: m["streetName"],
+      houseNumber: m["houseNumber"],
+      sides: m["sides"],
+      group: m["group"]);
+}

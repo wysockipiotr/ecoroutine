@@ -17,12 +17,12 @@ class LocationTile extends StatelessWidget {
           style: GoogleFonts.monda(),
         ),
         subtitle: Text(
-          "${location.city}, ${location.street} ${location.houseNumber}",
+          "${location.town.name}, ${location.streetName} ${location.houseNumber}",
           style: GoogleFonts.monda(),
         ),
         leading: CircleAvatar(
           child: Text(
-            location.street.substring(0, 2).toUpperCase(),
+            location.streetName.substring(0, 2).toUpperCase(),
             style: GoogleFonts.monda(),
           ),
         ));

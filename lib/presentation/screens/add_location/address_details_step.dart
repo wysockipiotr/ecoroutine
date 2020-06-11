@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:ecoschedule/presentation/screens/add_location/state/add_location_bloc.dart';
 import 'package:ecoschedule/presentation/screens/add_location/state/add_location_events.dart';
 import 'package:ecoschedule/presentation/screens/add_location/state/add_location_state.dart';
