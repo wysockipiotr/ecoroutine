@@ -55,14 +55,7 @@ class _AddressStepState extends State<AddressStep> {
             ),
             RaisedButton.icon(
                 icon: Icon(Icons.arrow_forward),
-                onPressed: () {
-                  if (this.selectedStreetIds != null &&
-                      _houseNumberFieldController.text.isNotEmpty) {
-                    BlocProvider.of<AddLocationBloc>(context).add(
-                        StreetSelectedEvent(selectedStreetIds,
-                            _houseNumberFieldController.text));
-                  }
-                },
+                onPressed: _nextStep,
                 color: Theme.of(context).primaryColor,
                 label: Text("Next")),
           ],
@@ -119,6 +112,7 @@ class _AddressStepState extends State<AddressStep> {
       controller: _houseNumberFieldController,
       focusNode: _houseNumberFocusNode,
       autofocus: true,
+      onFieldSubmitted: (_) => _nextStep(),
       inputFormatters: [
         WhitelistingTextInputFormatter(RegExp(HOUSE_NUMBER_REGEX)),
         UpperCaseTextFormatter()
@@ -128,6 +122,14 @@ class _AddressStepState extends State<AddressStep> {
           prefixIcon: Icon(Icons.location_on),
           filled: true),
     );
+  }
+
+  void _nextStep() {
+    if (this.selectedStreetIds != null &&
+        _houseNumberFieldController.text.isNotEmpty) {
+      BlocProvider.of<AddLocationBloc>(context).add(StreetSelectedEvent(
+          selectedStreetIds, _houseNumberFieldController.text));
+    }
   }
 
   @override
