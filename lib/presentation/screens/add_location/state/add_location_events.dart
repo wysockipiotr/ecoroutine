@@ -1,6 +1,5 @@
 import 'package:ecoschedule/domain/street_query_result.dart';
 import 'package:ecoschedule/domain/town.dart';
-import 'package:ecoschedule/presentation/screens/add_location/state/add_location_step.dart';
 import 'package:equatable/equatable.dart';
 
 class AddLocationEvent extends Equatable {
@@ -9,8 +8,6 @@ class AddLocationEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
-
-class SaveLocationEvent extends AddLocationEvent {}
 
 class TownSelectedEvent extends AddLocationEvent {
   final Town town;

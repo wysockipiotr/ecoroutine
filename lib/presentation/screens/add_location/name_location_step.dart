@@ -1,3 +1,5 @@
+import 'package:ecoschedule/data/persistence/dao.dart';
+import 'package:ecoschedule/domain/location.dart';
 import 'package:ecoschedule/presentation/screens/add_location/state/add_location_bloc.dart';
 import 'package:ecoschedule/presentation/screens/add_location/state/add_location_state.dart';
 import 'package:ecoschedule/presentation/screens/add_location/state/add_location_step.dart';
@@ -34,13 +36,25 @@ class _NameLocationStepState extends State<NameLocationStep> {
               height: 16,
             ),
             RaisedButton.icon(
-                onPressed: () {
-                  Scaffold.of(context).showSnackBar(SnackBar(
-                    duration: Duration(seconds: 1),
-                    content: Text("Saving ${_controller.text}...",
-                        style: TextStyle(color: Theme.of(context).accentColor)),
-                    backgroundColor: Theme.of(context).primaryColor,
-                  ));
+                onPressed: () async {
+                  if (_controller.text.isNotEmpty) {
+                    await LocationDao().add(Location(
+                        name: _controller.text,
+                        town: state.selectedTown,
+                        streetName: state.streetName,
+                        houseNumber: state.selectedHouseNumber,
+                        sides: state.sides,
+                        group: state.group));
+                    Navigator.of(context).pop();
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                      duration: Duration(seconds: 1),
+                      content: Text(
+                          "Location ${_controller.text} has been successfully saved",
+                          style:
+                              TextStyle(color: Theme.of(context).accentColor)),
+                      backgroundColor: Theme.of(context).primaryColor,
+                    ));
+                  }
                 },
                 color: Theme.of(context).primaryColor,
                 icon: Icon(Icons.save_alt),
