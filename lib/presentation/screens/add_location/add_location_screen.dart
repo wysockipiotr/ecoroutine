@@ -63,7 +63,7 @@ class AddLocationScreen extends StatelessWidget {
           subtitle:
               state.selectedTown != null ? Text(state.selectedTown.name) : null,
           isActive: state.currentStep == AddLocationStep.SelectTown,
-          state: (state.currentStep.index >= AddLocationStep.SelectTown.index)
+          state: (state.currentStep.index > AddLocationStep.SelectTown.index)
               ? StepState.complete
               : StepState.indexed,
           content: TownStep()),
@@ -74,7 +74,7 @@ class AddLocationScreen extends StatelessWidget {
                   ? Text("${state.streetName} ${state.selectedHouseNumber}")
                   : null,
           isActive: state.currentStep == AddLocationStep.EnterAddress,
-          state: (state.currentStep.index >= AddLocationStep.EnterAddress.index)
+          state: (state.currentStep.index > AddLocationStep.EnterAddress.index)
               ? StepState.complete
               : StepState.indexed,
           content: AddressStep()),
@@ -86,7 +86,7 @@ class AddLocationScreen extends StatelessWidget {
           content: AddressDetailsStep()),
       Step(
           title: const Text("Name"),
-          state: (state.currentStep.index >= AddLocationStep.NameLocation.index)
+          state: (state.currentStep.index > AddLocationStep.NameLocation.index)
               ? StepState.complete
               : StepState.indexed,
           isActive: state.currentStep == AddLocationStep.NameLocation,
