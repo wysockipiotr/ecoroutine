@@ -32,6 +32,7 @@ class _TownStepState extends State<TownStep> {
             autofocus: true,
             focusNode: _focusNode,
             controller: _controller,
+            textCapitalization: TextCapitalization.words,
             decoration: InputDecoration(
                 labelText: "Town",
                 prefixIcon: Icon(Icons.location_city),

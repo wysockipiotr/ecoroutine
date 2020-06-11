@@ -24,6 +24,7 @@ class _NameLocationStepState extends State<NameLocationStep> {
             TextFormField(
               controller: _controller,
               autofocus: true,
+              textCapitalization: TextCapitalization.sentences,
               decoration: InputDecoration(
                   labelText: "Name",
                   prefixIcon: Icon(Icons.home),

@@ -78,6 +78,7 @@ class _AddressStepState extends State<AddressStep> {
             WhitelistingTextInputFormatter(
                 RegExp("[^\u0000-\u007F]|[a-zA-Z0-9 ]")),
           ],
+          textCapitalization: TextCapitalization.words,
           controller: _streetFieldController,
           autofocus: true,
           decoration: InputDecoration(
