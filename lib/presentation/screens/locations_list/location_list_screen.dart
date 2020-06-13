@@ -36,7 +36,15 @@ class LocationsListScreen extends StatelessWidget {
                               }
                               return deletionConfirmed;
                             } else {
-                              return false;
+                              final updatedName =
+                                  await _showEditDialog(context, location.name);
+                              if (updatedName == null) {
+                                return false;
+                              } else {
+                                await locationDao.update(
+                                    location.copyWith(name: updatedName));
+                                return false;
+                              }
                             }
                           },
                           background: Container(
@@ -107,6 +115,41 @@ class LocationsListScreen extends StatelessWidget {
           child: Text("Delete"),
           onPressed: () {
             Navigator.of(context).pop(true);
+          },
+        ),
+      ],
+    );
+
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  _showEditDialog(BuildContext context, String name) {
+    TextEditingController controller = TextEditingController();
+
+    AlertDialog alert = AlertDialog(
+      title: Text("Edit $name"),
+      content: TextFormField(
+        autofocus: true,
+        controller: controller,
+        decoration:
+            InputDecoration(filled: true, labelText: "New location name"),
+      ),
+      actions: [
+        FlatButton(
+          child: Text("Cancel"),
+          onPressed: () {
+            Navigator.of(context).pop(null);
+          },
+        ),
+        FlatButton(
+          child: Text("Save"),
+          onPressed: () {
+            Navigator.of(context).pop(controller.text);
           },
         ),
       ],

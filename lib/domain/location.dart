@@ -23,9 +23,9 @@ class Location {
   String toString() =>
       "Location { $id, $name, $town, $streetName $houseNumber, $sides, $group }";
 
-  Location copyWithId(int id) => Location(
-      id: id,
-      name: name,
+  Location copyWith({int id, String name}) => Location(
+      id: id ?? this.id,
+      name: name ?? this.name,
       town: town,
       streetName: streetName,
       houseNumber: houseNumber,

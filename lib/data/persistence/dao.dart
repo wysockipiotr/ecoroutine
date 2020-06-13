@@ -11,7 +11,13 @@ class LocationDao {
 
   Future<Location> add(Location location) async {
     final id = await _locationStore.add(await _db, location.toMap());
-    return location.copyWithId(id);
+    return location.copyWith(id: id);
+  }
+
+  Future<Location> update(Location location) async {
+    final finder = Finder(filter: Filter.byKey(location.id));
+    await _locationStore.update(await _db, location.toMap(), finder: finder);
+    return location;
   }
 
   Future<void> delete(int id) async {
@@ -23,7 +29,7 @@ class LocationDao {
     final snapshot = await _locationStore.find(await _db);
     return snapshot
         .map((snapshot) =>
-            Location.fromMap(snapshot.value).copyWithId(snapshot.key))
+            Location.fromMap(snapshot.value).copyWith(id: snapshot.key))
         .toList();
   }
 }
