@@ -57,7 +57,6 @@ class _LocationsListScreenState extends State<LocationsListScreen> {
                             } else {
                               await locationDao
                                   .update(location.copyWith(name: updatedName));
-
                               BlocProvider.of<LocationListBloc>(context)
                                   .add(LocationListEvent.ReloadLocations);
                               return false;
@@ -149,15 +148,16 @@ class _LocationsListScreenState extends State<LocationsListScreen> {
   }
 
   _showEditDialog(BuildContext context, String name) {
-    TextEditingController controller = TextEditingController();
+    TextEditingController controller = TextEditingController(text: name);
 
     AlertDialog alert = AlertDialog(
-      title: Text("Edit $name"),
+      title: Text("Rename"),
       content: TextFormField(
         autofocus: true,
         controller: controller,
-        decoration:
-            InputDecoration(filled: true, labelText: "New location name"),
+        textCapitalization: TextCapitalization.sentences,
+        decoration: InputDecoration(filled: true, labelText: "Location name"),
+        onFieldSubmitted: (value) => Navigator.of(context).pop(value),
       ),
       actions: [
         FlatButton(
