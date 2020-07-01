@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:ecoschedule/data/services/api/api.dart';
+import 'package:ecoschedule/data/services/api/schedule_period.dart';
+import 'package:ecoschedule/domain/location.dart';
 import 'package:ecoschedule/domain/street_query_result.dart';
 import 'package:flutter/foundation.dart';
 import "package:http/http.dart" as http;
@@ -72,4 +74,32 @@ Future<List<StreetQueryResult>> queryStreets(
           sides: street["sides"],
           group: street["g1"],
           numbers: street["numbers"].split(","))));
+}
+
+Future<String> resolveCurrentStreetId({Location location}) async {
+  final schedulePeriod = await getSchedulePeriods(townId: location.town.id);
+  final streetIds = await getStreetIds(
+      townId: location.town.id,
+      schedulePeriodId: schedulePeriod.id,
+      streetNamePattern: location.streetName,
+      houseNumber: location.houseNumber);
+  final streets = (await queryStreets(
+          townId: location.town.id,
+          schedulePeriodId: schedulePeriod.id,
+          streetIds: streetIds.first.ids,
+          houseNumber: location.houseNumber))
+      .where(
+          (street) => location.sides == null || street.sides == location.sides)
+      .where(
+          (street) => location.group == null || street.group == location.group)
+      .toList();
+  if (streets.isEmpty) {
+    return null;
+  }
+  if (streets.length == 1) {
+    return streets.first.id;
+  }
+  return streets
+      .firstWhere((street) => street.numbers.contains(location.houseNumber))
+      .id;
 }

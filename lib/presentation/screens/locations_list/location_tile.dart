@@ -2,7 +2,9 @@ import 'package:ecoschedule/domain/location.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+
 class LocationTile extends StatelessWidget {
+
   final Location location;
 
   const LocationTile({this.location});

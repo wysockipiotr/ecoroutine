@@ -1,7 +1,8 @@
 import 'package:ecoschedule/domain/town.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
-class Location {
+class Location extends Equatable {
   final int id;
   final String name;
   final Town town;
@@ -18,6 +19,10 @@ class Location {
       @required this.houseNumber,
       this.sides,
       this.group});
+
+  @override
+  List<Object> get props =>
+      [id, name, town, streetName, houseNumber, sides, group];
 
   @override
   String toString() =>
