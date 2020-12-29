@@ -1,0 +1,1 @@
+enum SchedulesEvent { SchedulesRequested, RefreshRequested }
