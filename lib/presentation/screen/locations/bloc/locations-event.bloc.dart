@@ -1,1 +1,0 @@
-enum LocationListEvent { ReloadLocations }

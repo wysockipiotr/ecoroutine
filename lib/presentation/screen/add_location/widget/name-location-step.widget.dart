@@ -1,7 +1,7 @@
-import 'package:ecoschedule/domain/location/entity/entity.dart';
-import 'package:ecoschedule/domain/location/repository/repository.dart';
-import 'package:ecoschedule/presentation/screen/add_location/bloc/bloc.dart';
-import 'package:ecoschedule/presentation/screen/add_location/enum/enum.dart';
+import 'package:ecoroutine/domain/location/entity/entity.dart';
+import 'package:ecoroutine/domain/location/repository/repository.dart';
+import 'package:ecoroutine/presentation/screen/add_location/bloc/bloc.dart';
+import 'package:ecoroutine/presentation/screen/add_location/enum/enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,7 +16,7 @@ class _NameLocationStepState extends State<NameLocationStep> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddLocationBloc, AddLocationState>(
+    return BlocBuilder<AddLocationCubit, AddLocationState>(
         builder: (context, state) {
       if (state.currentStep == AddLocationStep.NameLocation) {
         return Column(

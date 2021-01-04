@@ -1,1 +1,1 @@
-export "package:ecoschedule/presentation/screen/locations/widget/location-tile.widget.dart";
+export "package:ecoroutine/presentation/screen/locations/widget/location-tile.widget.dart";

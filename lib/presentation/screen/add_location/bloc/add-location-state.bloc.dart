@@ -1,5 +1,5 @@
-import 'package:ecoschedule/adapter/ecoharmonogram-api/dto/dto.dart';
-import 'package:ecoschedule/presentation/screen/add_location/enum/enum.dart';
+import 'package:ecoroutine/adapter/ecoharmonogram-api/dto/dto.dart';
+import 'package:ecoroutine/presentation/screen/add_location/enum/enum.dart';
 import 'package:equatable/equatable.dart';
 
 class AddLocationState extends Equatable {

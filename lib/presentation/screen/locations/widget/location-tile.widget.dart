@@ -1,4 +1,4 @@
-import 'package:ecoschedule/domain/location/entity/entity.dart';
+import 'package:ecoroutine/domain/location/entity/entity.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

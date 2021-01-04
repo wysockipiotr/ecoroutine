@@ -1,8 +1,9 @@
-import 'package:ecoschedule/domain/location/entity/entity.dart';
-import 'package:ecoschedule/domain/location/repository/repository.dart';
-import 'package:ecoschedule/presentation/screen/add_location/add-location.screen.dart';
-import 'package:ecoschedule/presentation/screen/locations/bloc/bloc.dart';
-import 'package:ecoschedule/presentation/screen/locations/widget/widget.dart';
+import 'package:ecoroutine/domain/location/entity/entity.dart';
+import 'package:ecoroutine/domain/location/repository/repository.dart';
+import 'package:ecoroutine/presentation/screen/add_location/add-location.screen.dart';
+import 'package:ecoroutine/presentation/screen/locations/bloc/bloc.dart';
+import 'package:ecoroutine/presentation/screen/locations/widget/widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,8 +16,7 @@ class LocationsScreen extends StatefulWidget {
 class _LocationsScreenState extends State<LocationsScreen> {
   @override
   void initState() {
-    BlocProvider.of<LocationListBloc>(context)
-        .add(LocationListEvent.ReloadLocations);
+    context.read<LocationListCubit>().reloadLocations();
     super.initState();
   }
 
@@ -29,9 +29,13 @@ class _LocationsScreenState extends State<LocationsScreen> {
         elevation: 0,
         backgroundColor: Theme.of(context).canvasColor,
         centerTitle: true,
+        leading: IconButton(
+          icon: Icon(CupertinoIcons.back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         title: Text("Locations", style: GoogleFonts.monda()),
       ),
-      body: BlocBuilder<LocationListBloc, LocationListState>(
+      body: BlocBuilder<LocationListCubit, LocationListState>(
         builder: (context, state) {
           if (state is LocationListReady) {
             return ListView(
@@ -45,9 +49,9 @@ class _LocationsScreenState extends State<LocationsScreen> {
                                     false;
                             if (deletionConfirmed) {
                               await locationDao.delete(location.id);
-
-                              BlocProvider.of<LocationListBloc>(context)
-                                  .add(LocationListEvent.ReloadLocations);
+                              context
+                                  .read<LocationListCubit>()
+                                  .reloadLocations();
                             }
                             return deletionConfirmed;
                           } else {
@@ -58,39 +62,42 @@ class _LocationsScreenState extends State<LocationsScreen> {
                             } else {
                               await locationDao
                                   .update(location.copyWith(name: updatedName));
-                              BlocProvider.of<LocationListBloc>(context)
-                                  .add(LocationListEvent.ReloadLocations);
+                              context
+                                  .read<LocationListCubit>()
+                                  .reloadLocations();
                               return false;
                             }
                           }
                         },
                         background: Container(
-                          color: Colors.grey[700],
+                          color: Colors.grey[500],
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 SizedBox(
                                   width: 36,
                                 ),
-                                Icon(Icons.edit),
+                                Icon(Icons.edit, color: Colors.white),
                                 SizedBox(
                                   width: 36,
                                 ),
                                 Text("Edit",
-                                    style: GoogleFonts.monda(fontSize: 16))
+                                    style: GoogleFonts.monda(
+                                        fontSize: 16, color: Colors.white))
                               ]),
                         ),
                         secondaryBackground: Container(
-                            color: Colors.red,
+                            color: Colors.red[300],
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: <Widget>[
                                   Text("Delete",
-                                      style: GoogleFonts.monda(fontSize: 16)),
+                                      style: GoogleFonts.monda(
+                                          fontSize: 16, color: Colors.white)),
                                   SizedBox(
                                     width: 36,
                                   ),
-                                  Icon(Icons.delete),
+                                  Icon(Icons.delete, color: Colors.white),
                                   SizedBox(
                                     width: 36,
                                   ),
@@ -107,14 +114,13 @@ class _LocationsScreenState extends State<LocationsScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).primaryColor,
-        foregroundColor: Theme.of(context).accentColor,
+        backgroundColor: Colors.white,
+        foregroundColor: Theme.of(context).primaryColor,
         child: Icon(Icons.add),
         onPressed: () async {
           await Navigator.push(context,
               MaterialPageRoute(builder: (context) => AddLocationScreen()));
-          BlocProvider.of<LocationListBloc>(context)
-              .add(LocationListEvent.ReloadLocations);
+          context.read<LocationListCubit>().reloadLocations();
         },
       ),
     );

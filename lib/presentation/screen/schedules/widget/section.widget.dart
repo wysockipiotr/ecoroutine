@@ -1,4 +1,4 @@
-import 'package:ecoschedule/presentation/screen/schedules/widget/widget.dart';
+import 'package:ecoroutine/presentation/screen/schedules/widget/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,7 +18,7 @@ class Section extends StatelessWidget {
           child: Text(
             title,
             style: GoogleFonts.monda(
-                textStyle: Theme.of(context).textTheme.subtitle2),
+                textStyle: Theme.of(context).textTheme.caption),
           ),
           padding: EdgeInsets.only(left: 12.0, top: 16.0, bottom: 12.0),
         ),

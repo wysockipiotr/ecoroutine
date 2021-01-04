@@ -1,9 +1,9 @@
-import 'package:ecoschedule/adapter/adapter.dart';
-import 'package:ecoschedule/adapter/ecoharmonogram-api/dto/dto.dart';
-import 'package:ecoschedule/presentation/screen/add_location/bloc/bloc.dart';
-import 'package:ecoschedule/presentation/screen/add_location/enum/enum.dart';
-import 'package:ecoschedule/presentation/screen/add_location/widget/widget.dart';
-import 'package:ecoschedule/utility/utility.dart';
+import 'package:ecoroutine/adapter/adapter.dart';
+import 'package:ecoroutine/adapter/ecoharmonogram-api/dto/dto.dart';
+import 'package:ecoroutine/presentation/screen/add_location/bloc/bloc.dart';
+import 'package:ecoroutine/presentation/screen/add_location/enum/enum.dart';
+import 'package:ecoroutine/presentation/screen/add_location/widget/widget.dart';
+import 'package:ecoroutine/utility/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,7 +36,7 @@ class _AddressStepState extends State<AddressStep> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddLocationBloc, AddLocationState>(
+    return BlocBuilder<AddLocationCubit, AddLocationState>(
         builder: (BuildContext context, AddLocationState state) {
       if (state.currentStep == AddLocationStep.EnterAddress) {
         return Column(
@@ -124,8 +124,9 @@ class _AddressStepState extends State<AddressStep> {
   void _nextStep() {
     if (this.selectedStreetIds != null &&
         _houseNumberFieldController.text.isNotEmpty) {
-      BlocProvider.of<AddLocationBloc>(context).add(StreetSelectedEvent(
-          selectedStreetIds, _houseNumberFieldController.text));
+      context.read<AddLocationCubit>().onStreetSelected(
+          streetIds: selectedStreetIds,
+          houseNumber: _houseNumberFieldController.text);
     }
   }
 

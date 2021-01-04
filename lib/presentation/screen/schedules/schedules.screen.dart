@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:ecoschedule/adapter/adapter.dart';
-import 'package:ecoschedule/adapter/ecoharmonogram-api/dto/dto.dart';
-import 'package:ecoschedule/presentation/screen/locations/locations.screen.dart';
-import 'package:ecoschedule/presentation/screen/schedules/bloc/bloc.dart';
-import 'package:ecoschedule/presentation/screen/schedules/widget/widget.dart';
+import 'package:ecoroutine/adapter/adapter.dart';
+import 'package:ecoroutine/adapter/ecoharmonogram-api/dto/dto.dart';
+import 'package:ecoroutine/presentation/screen/locations/locations.screen.dart';
+import 'package:ecoroutine/presentation/screen/schedules/bloc/bloc.dart';
+import 'package:ecoroutine/presentation/screen/schedules/widget/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -27,7 +27,7 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SchedulesBloc, SchedulesState>(
+    return BlocConsumer<SchedulesCubit, SchedulesState>(
       listener: (context, state) {
         if (state is SchedulesReady) {
           _refreshCompleter?.complete();
@@ -62,7 +62,7 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
                         MaterialPageRoute(
                             builder: (context) => LocationsScreen()));
                   },
-                  child: Text("No locations"),
+                  child: Text("No locations", style: GoogleFonts.monda()),
                 ),
               ),
               body: Container(),
@@ -75,25 +75,30 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
           return Scaffold(
               appBar: AppBar(
                 backgroundColor: Theme.of(context).canvasColor,
-                elevation: 0,
+                elevation: 1,
+                toolbarHeight: 75,
                 centerTitle: true,
-                title: GestureDetector(
+                title: InkWell(
+                    borderRadius: BorderRadius.circular(6.0),
                     onTap: () async {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => LocationsScreen()));
                     },
-                    child: Column(
-                      children: <Widget>[
-                        Text(activeLocation.name,
-                            style:
-                                GoogleFonts.monda().copyWith(fontSize: 16.0)),
-                        Text(
-                            "${activeLocation.town.name}, ${activeLocation.streetName} ${activeLocation.houseNumber}",
-                            style:
-                                GoogleFonts.monda().copyWith(fontSize: 12.0)),
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.all(6.0),
+                      child: Column(
+                        children: <Widget>[
+                          Text(activeLocation.name,
+                              style:
+                                  GoogleFonts.monda().copyWith(fontSize: 16.0)),
+                          Text(
+                              "${activeLocation.town.name}, ${activeLocation.streetName} ${activeLocation.houseNumber}",
+                              style:
+                                  GoogleFonts.monda().copyWith(fontSize: 12.0)),
+                        ],
+                      ),
                     )),
               ),
               body: PageView(
@@ -108,8 +113,7 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
                     return RefreshIndicator(
                         child: _buildSectionList(disposals),
                         onRefresh: () async {
-                          BlocProvider.of<SchedulesBloc>(context)
-                              .add(SchedulesEvent.RefreshRequested);
+                          context.read<SchedulesCubit>().onRefreshRequested();
                           return _refreshCompleter.future;
                         });
                   }).toList()));
@@ -133,7 +137,7 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
         return Container(
             margin: EdgeInsets.only(left: 8.0, right: 8.0, bottom: 16.0),
             child: Section(
-              title: DateFormat("d MMMM")
+              title: DateFormat("d MMMM yyyy")
                   .format(disposalsByDay.keys.toList()[index]),
               tiles: disposalsByDay[disposalsByDay.keys.toList()[index]]
                   .map((WasteDisposalDto disposal) =>

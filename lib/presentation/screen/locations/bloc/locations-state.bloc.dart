@@ -1,4 +1,4 @@
-import 'package:ecoschedule/domain/location/entity/entity.dart';
+import 'package:ecoroutine/domain/location/entity/entity.dart';
 import 'package:equatable/equatable.dart';
 
 class LocationListState extends Equatable {

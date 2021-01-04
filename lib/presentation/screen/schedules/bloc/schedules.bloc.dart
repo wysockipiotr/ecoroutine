@@ -1,16 +1,16 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:ecoschedule/adapter/adapter.dart';
-import 'package:ecoschedule/domain/location/entity/entity.dart';
-import 'package:ecoschedule/presentation/screen/locations/bloc/bloc.dart';
-import 'package:ecoschedule/presentation/screen/schedules/bloc/bloc.dart';
+import 'package:ecoroutine/adapter/adapter.dart';
+import 'package:ecoroutine/domain/location/entity/entity.dart';
+import 'package:ecoroutine/presentation/screen/locations/bloc/bloc.dart';
+import 'package:ecoroutine/presentation/screen/schedules/bloc/bloc.dart';
 
-class SchedulesBloc extends Bloc<SchedulesEvent, SchedulesState> {
-  final LocationListBloc locationListBloc;
+class SchedulesCubit extends Cubit<SchedulesState> {
+  final LocationListCubit locationListBloc;
   StreamSubscription _locationBlocSubscription;
 
-  SchedulesBloc(this.locationListBloc) {
+  SchedulesCubit(this.locationListBloc) : super(SchedulesReady({})) {
     _locationBlocSubscription = locationListBloc
         .where((state) => state is LocationListReady)
         .cast<LocationListReady>()
@@ -18,20 +18,15 @@ class SchedulesBloc extends Bloc<SchedulesEvent, SchedulesState> {
       return prev == next;
     }).listen((LocationListState locationListState) {
       if (locationListState is LocationListReady) {
-        add(SchedulesEvent.SchedulesRequested);
+        onSchedulesRequested();
       }
     });
   }
 
-  @override
-  SchedulesState get initialState => SchedulesReady({});
-
-  @override
-  Stream<SchedulesState> mapEventToState(SchedulesEvent event) async* {
-    if (locationListBloc.state is LocationListReady &&
-        event == SchedulesEvent.SchedulesRequested) {
+  Future<void> onSchedulesRequested() async {
+    if (locationListBloc.state is LocationListReady) {
       final locations = (locationListBloc.state as LocationListReady).locations;
-      yield SchedulesLoading();
+      emit(SchedulesLoading());
 
       Map<LocationEntity, List<WasteDisposalDto>> locationsToDisposals = {};
       for (final location in locations) {
@@ -41,9 +36,12 @@ class SchedulesBloc extends Bloc<SchedulesEvent, SchedulesState> {
         locationsToDisposals[location] = disposals;
       }
 
-      yield SchedulesReady(locationsToDisposals);
-    } else if (event == SchedulesEvent.RefreshRequested &&
-        locationListBloc.state is LocationListReady) {
+      emit(SchedulesReady(locationsToDisposals));
+    }
+  }
+
+  Future<void> onRefreshRequested() async {
+    if (locationListBloc.state is LocationListReady) {
       final locations = (locationListBloc.state as LocationListReady).locations;
 
       Map<LocationEntity, List<WasteDisposalDto>> locationsToDisposals = {};
@@ -54,7 +52,7 @@ class SchedulesBloc extends Bloc<SchedulesEvent, SchedulesState> {
         locationsToDisposals[location] = disposals;
       }
 
-      yield SchedulesReady(locationsToDisposals);
+      emit(SchedulesReady(locationsToDisposals));
     }
   }
 

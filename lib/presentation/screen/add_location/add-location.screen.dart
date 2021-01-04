@@ -1,6 +1,7 @@
-import 'package:ecoschedule/presentation/screen/add_location/bloc/bloc.dart';
-import 'package:ecoschedule/presentation/screen/add_location/enum/enum.dart';
-import 'package:ecoschedule/presentation/screen/add_location/widget/widget.dart';
+import 'package:ecoroutine/presentation/screen/add_location/bloc/bloc.dart';
+import 'package:ecoroutine/presentation/screen/add_location/enum/enum.dart';
+import 'package:ecoroutine/presentation/screen/add_location/widget/widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,18 +11,21 @@ class AddLocationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (BuildContext context) => AddLocationBloc(),
+        create: (BuildContext context) => AddLocationCubit(),
         child: Scaffold(
           appBar: AppBar(
-            elevation: 0,
-            backgroundColor: Theme.of(context).canvasColor,
-            title: Text("Add location", style: GoogleFonts.monda()),
-            centerTitle: true,
-          ),
+              elevation: 0,
+              backgroundColor: Theme.of(context).canvasColor,
+              title: Text("Add location", style: GoogleFonts.monda()),
+              centerTitle: true,
+              leading: IconButton(
+                icon: Icon(CupertinoIcons.back),
+                onPressed: () => Navigator.of(context).pop(),
+              )),
           body: Column(
             children: <Widget>[
               Expanded(
-                child: BlocBuilder<AddLocationBloc, AddLocationState>(
+                child: BlocBuilder<AddLocationCubit, AddLocationState>(
                     builder: (BuildContext context, AddLocationState state) =>
                         _buildStepper(state)),
               )

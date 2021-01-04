@@ -1,9 +1,8 @@
 import 'dart:convert';
 
-import 'package:ecoschedule/adapter/ecoharmonogram-api/dto/dto.dart'
+import 'package:ecoroutine/adapter/ecoharmonogram-api/dto/dto.dart'
     show SchedulePeriodDto;
-import 'package:ecoschedule/config/config.dart'
-    show ECOHARMONOGRAM_API_BASE_URL;
+import 'package:ecoroutine/config/config.dart' show ECOHARMONOGRAM_API_BASE_URL;
 import "package:http/http.dart" as http;
 
 Future<SchedulePeriodDto> getSchedulePeriods({String townId}) async {
@@ -16,14 +15,15 @@ Future<SchedulePeriodDto> getSchedulePeriods({String townId}) async {
   final List schedulePeriods = payload["schedulePeriods"];
 
   return List<SchedulePeriodDto>.from(schedulePeriods.map((schedulePeriod) =>
-          SchedulePeriodDto(
-              id: schedulePeriod["id"],
-              fromDate: DateTime.parse(schedulePeriod["startDate"]),
-              toDate: DateTime.parse(schedulePeriod["endDate"]),
-              changeDate: DateTime.parse(schedulePeriod["changeDate"]))))
-      .firstWhere((SchedulePeriodDto schedulePeriod) {
-    final now = DateTime.now();
-    return now.isAfter(schedulePeriod.fromDate) &&
-        now.isBefore(schedulePeriod.toDate);
-  });
+      SchedulePeriodDto(
+          id: schedulePeriod["id"],
+          fromDate: DateTime.parse(schedulePeriod["startDate"]),
+          toDate: DateTime.parse(schedulePeriod["endDate"]),
+          changeDate: DateTime.parse(schedulePeriod["changeDate"])))).last;
+  // .firstWhere((SchedulePeriodDto schedulePeriod) {
+  // return true;
+  // final now = DateTime.now();
+  // return now.isAfter(schedulePeriod.fromDate) &&
+  //     now.isBefore(schedulePeriod.toDate);
+  // });
 }

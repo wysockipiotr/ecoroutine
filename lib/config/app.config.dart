@@ -1,1 +1,1 @@
-const APP_TITLE = "ecoschedule";
+const APP_TITLE = "ecoroutine";

@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:ecoschedule/adapter/adapter.dart';
-import 'package:ecoschedule/adapter/ecoharmonogram-api/dto/dto.dart';
+import 'package:ecoroutine/adapter/adapter.dart';
+import 'package:ecoroutine/adapter/ecoharmonogram-api/dto/dto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -15,12 +15,17 @@ class CategoryTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: disposal.color,
+      elevation: 0,
+      color: Colors.grey[200],
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            FaIcon(ICON_MAP[disposal.name] ?? FontAwesomeIcons.recycle),
+            FaIcon(
+              ICON_MAP[disposal.name.trim().toUpperCase()] ??
+                  FontAwesomeIcons.recycle,
+              color: disposal.color.withAlpha(255),
+            ),
             SizedBox(
               height: 4.0,
             ),
@@ -28,9 +33,9 @@ class CategoryTile extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 8.0),
               child: AutoSizeText(
                 this.disposal.name.sentenceCase,
-                maxLines: 2,
+                maxLines: 3,
                 textAlign: TextAlign.center,
-                style: GoogleFonts.monda(),
+                style: GoogleFonts.monda(color: disposal.color.withAlpha(255)),
               ),
             )
           ],

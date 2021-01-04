@@ -1,1 +1,1 @@
-export "package:ecoschedule/domain/location/entity/location.entity.dart";
+export "package:ecoroutine/domain/location/entity/location.entity.dart";

@@ -1,4 +1,4 @@
-import 'package:ecoschedule/adapter/ecoharmonogram-api/dto/dto.dart'
+import 'package:ecoroutine/adapter/ecoharmonogram-api/dto/dto.dart'
     show TownDto;
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';

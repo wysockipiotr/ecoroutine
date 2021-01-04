@@ -1,4 +1,4 @@
-package com.example.ecoschedule
+package com.example.ecoroutine
 
 import io.flutter.embedding.android.FlutterActivity
 

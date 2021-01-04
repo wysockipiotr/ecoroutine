@@ -1,6 +1,6 @@
-import 'package:ecoschedule/adapter/adapter.dart';
-import 'package:ecoschedule/presentation/screen/add_location/bloc/bloc.dart';
-import 'package:ecoschedule/presentation/screen/add_location/widget/widget.dart';
+import 'package:ecoroutine/adapter/adapter.dart';
+import 'package:ecoroutine/presentation/screen/add_location/bloc/bloc.dart';
+import 'package:ecoroutine/presentation/screen/add_location/widget/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -52,10 +52,8 @@ class _TownStepState extends State<TownStep> {
               subtitle: Text("${town.district}, ${town.province}"),
             ),
         debounceDuration: Duration(milliseconds: 750),
-        onSuggestionSelected: (TownDto selectedTown) {
-          BlocProvider.of<AddLocationBloc>(context)
-              .add(TownSelectedEvent(selectedTown));
-        },
+        onSuggestionSelected: (TownDto selectedTown) =>
+            context.read<AddLocationCubit>().onTownSelected(town: selectedTown),
         getImmediateSuggestions: true,
         loadingBuilder: (BuildContext ctx) => LinearProgressIndicator(),
         noItemsFoundBuilder: _buildNoItemsPlaceholder);

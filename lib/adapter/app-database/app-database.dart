@@ -1,1 +1,1 @@
-export "package:ecoschedule/adapter/app-database/adapter/app-database.adapter.dart";
+export "package:ecoroutine/adapter/app-database/adapter/app-database.adapter.dart";

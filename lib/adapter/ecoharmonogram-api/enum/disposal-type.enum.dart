@@ -10,6 +10,8 @@ class DisposalType {
   static const MixedCleaning = "MYCIE POJEMNIKÓW ZMIESZANE";
   static const Paper = "PAPIER";
   static const BioCleaning = "MYCIE POJEMNIKÓW BIO";
+  static const Ash = "POPIÓŁ";
+  static const Payment = "TERMIN PŁATNOŚCI";
 }
 
 const Map<String, IconData> ICON_MAP = const {
@@ -20,5 +22,7 @@ const Map<String, IconData> ICON_MAP = const {
   DisposalType.Glass: FontAwesomeIcons.wineBottle,
   DisposalType.Paper: FontAwesomeIcons.solidNewspaper,
   DisposalType.BioCleaning: FontAwesomeIcons.faucet,
-  DisposalType.MixedCleaning: FontAwesomeIcons.faucet
+  DisposalType.MixedCleaning: FontAwesomeIcons.faucet,
+  DisposalType.Ash: FontAwesomeIcons.fire,
+  DisposalType.Payment: FontAwesomeIcons.creditCard
 };

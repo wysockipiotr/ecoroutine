@@ -1,6 +1,6 @@
-import 'package:ecoschedule/adapter/ecoharmonogram-api/adapter/adapter.dart'
+import 'package:ecoroutine/adapter/ecoharmonogram-api/adapter/adapter.dart'
     show getStreetIds, getStreets, getSchedulePeriods;
-import 'package:ecoschedule/domain/location/location.dart' show LocationEntity;
+import 'package:ecoroutine/domain/location/location.dart' show LocationEntity;
 
 Future<String> resolveCurrentStreetId({LocationEntity location}) async {
   final schedulePeriod = await getSchedulePeriods(townId: location.town.id);

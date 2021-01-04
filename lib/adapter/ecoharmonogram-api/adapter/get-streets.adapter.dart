@@ -1,8 +1,7 @@
 import 'dart:convert';
-import 'package:ecoschedule/adapter/ecoharmonogram-api/dto/dto.dart'
+import 'package:ecoroutine/adapter/ecoharmonogram-api/dto/dto.dart'
     show StreetIdsQueryResultDto, StreetQueryResultDto;
-import 'package:ecoschedule/config/config.dart'
-    show ECOHARMONOGRAM_API_BASE_URL;
+import 'package:ecoroutine/config/config.dart' show ECOHARMONOGRAM_API_BASE_URL;
 import 'package:flutter/foundation.dart';
 import "package:http/http.dart" as http;
 

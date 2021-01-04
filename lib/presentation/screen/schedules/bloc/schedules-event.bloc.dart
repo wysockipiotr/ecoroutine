@@ -1,1 +1,0 @@
-enum SchedulesEvent { SchedulesRequested, RefreshRequested }

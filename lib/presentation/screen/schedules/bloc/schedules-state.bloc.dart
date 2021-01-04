@@ -1,5 +1,5 @@
-import 'package:ecoschedule/adapter/ecoharmonogram-api/dto/waste-disposal.dto.dart';
-import 'package:ecoschedule/domain/location/entity/entity.dart';
+import 'package:ecoroutine/adapter/ecoharmonogram-api/dto/waste-disposal.dto.dart';
+import 'package:ecoroutine/domain/location/entity/entity.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class SchedulesState extends Equatable {

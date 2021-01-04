@@ -1,21 +1,16 @@
 import 'package:bloc/bloc.dart';
-import 'package:ecoschedule/domain/location/repository/repository.dart';
-import 'package:ecoschedule/presentation/screen/locations/bloc/bloc.dart';
+import 'package:ecoroutine/domain/location/repository/repository.dart';
+import 'package:ecoroutine/presentation/screen/locations/bloc/bloc.dart';
 
-class LocationListBloc extends Bloc<LocationListEvent, LocationListState> {
+class LocationListCubit extends Cubit<LocationListState> {
   final ILocationRepository _locationRepository;
 
-  LocationListBloc() : _locationRepository = LocationRepository();
+  LocationListCubit()
+      : _locationRepository = LocationRepository(),
+        super(LocationListReady(locations: []));
 
-  @override
-  LocationListState get initialState => LocationListReady(locations: []);
-
-  @override
-  Stream<LocationListState> mapEventToState(LocationListEvent event) async* {
-    if (event == LocationListEvent.ReloadLocations) {
-      yield LocationListLoading();
-      final locations = await _locationRepository.getAll();
-      yield LocationListReady(locations: locations);
-    }
+  Future<void> reloadLocations() async {
+    emit(LocationListLoading());
+    emit(LocationListReady(locations: await _locationRepository.getAll()));
   }
 }

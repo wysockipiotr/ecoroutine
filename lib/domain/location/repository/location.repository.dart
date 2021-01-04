@@ -1,8 +1,8 @@
-import 'package:ecoschedule/adapter/app-database/app-database.dart'
+import 'package:ecoroutine/adapter/app-database/app-database.dart'
     show AppDatabaseAdapter;
-import 'package:ecoschedule/domain/location/entity/entity.dart'
+import 'package:ecoroutine/domain/location/entity/entity.dart'
     show LocationEntity;
-import 'package:ecoschedule/domain/location/repository/repository.dart'
+import 'package:ecoroutine/domain/location/repository/repository.dart'
     show ILocationRepository;
 import 'package:sembast/sembast.dart';
 

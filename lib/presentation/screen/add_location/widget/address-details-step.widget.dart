@@ -1,5 +1,5 @@
-import 'package:ecoschedule/presentation/screen/add_location/bloc/bloc.dart';
-import 'package:ecoschedule/presentation/screen/add_location/enum/enum.dart';
+import 'package:ecoroutine/presentation/screen/add_location/bloc/bloc.dart';
+import 'package:ecoroutine/presentation/screen/add_location/enum/enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +17,7 @@ class _AddressDetailsStep extends State<AddressDetailsStep> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddLocationBloc, AddLocationState>(
+    return BlocBuilder<AddLocationCubit, AddLocationState>(
         builder: (BuildContext context, AddLocationState state) {
       if (state.currentStep == AddLocationStep.SelectDetails) {
         return _buildDetailsDropdowns(state);
@@ -90,9 +90,8 @@ class _AddressDetailsStep extends State<AddressDetailsStep> {
         ),
         RaisedButton.icon(
             onPressed: () {
-              BlocProvider.of<AddLocationBloc>(context).add(
-                  DetailsSelectedEvent(
-                      sides: _selectedSides, group: _selectedGroup));
+              context.read<AddLocationCubit>().onDetailsSelected(
+                  sides: _selectedSides, group: _selectedGroup);
             },
             color: Theme.of(context).primaryColor,
             icon: Icon(Icons.arrow_forward),

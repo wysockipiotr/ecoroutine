@@ -4,6 +4,8 @@
 <h3 align="center">ecoroutine</h3>
 <h6 align="center">Waste segregation schedule</h6>
 
+###### Showcase
+
 <p float="left" align="center">
   <img src="https://github.com/wysockipiotr/ecoroutine/blob/assets/screenshots/schedules_screen.png" width="300" />
   <img src="https://github.com/wysockipiotr/ecoroutine/blob/assets/screenshots/add_location_screen.jpg" width="300" /> 

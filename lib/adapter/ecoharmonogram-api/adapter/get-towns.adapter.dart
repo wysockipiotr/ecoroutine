@@ -1,9 +1,8 @@
 import 'dart:convert';
 
-import 'package:ecoschedule/adapter/ecoharmonogram-api/dto/dto.dart'
+import 'package:ecoroutine/adapter/ecoharmonogram-api/dto/dto.dart'
     show TownDto;
-import 'package:ecoschedule/config/config.dart'
-    show ECOHARMONOGRAM_API_BASE_URL;
+import 'package:ecoroutine/config/config.dart' show ECOHARMONOGRAM_API_BASE_URL;
 import "package:http/http.dart" as http;
 
 Future<List<TownDto>> getTowns({String townNamePattern}) async {
