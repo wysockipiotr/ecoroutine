@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:collection/collection.dart';
 import 'package:ecoroutine/adapter/adapter.dart';
 import 'package:ecoroutine/domain/location/entity/entity.dart';
 import 'package:ecoroutine/presentation/screen/locations/bloc/bloc.dart';
@@ -28,13 +29,10 @@ class SchedulesCubit extends Cubit<SchedulesState> {
       final locations = (locationListBloc.state as LocationListReady).locations;
       emit(SchedulesLoading());
 
-      Map<LocationEntity, List<WasteDisposalDto>> locationsToDisposals = {};
-      for (final location in locations) {
-        final streetId = await resolveCurrentStreetId(location: location);
-        final disposals = await getSchedule(
-            streetId: streetId, houseNumber: location.houseNumber);
-        locationsToDisposals[location] = disposals;
-      }
+      final locationsToDisposals = Map.fromIterables(
+          locations,
+          await Future.wait(
+              locations.map((location) => _getSchedulesForLocation(location))));
 
       emit(SchedulesReady(locationsToDisposals));
     }
@@ -43,17 +41,20 @@ class SchedulesCubit extends Cubit<SchedulesState> {
   Future<void> onRefreshRequested() async {
     if (locationListBloc.state is LocationListReady) {
       final locations = (locationListBloc.state as LocationListReady).locations;
-
-      Map<LocationEntity, List<WasteDisposalDto>> locationsToDisposals = {};
-      for (final location in locations) {
-        final streetId = await resolveCurrentStreetId(location: location);
-        final disposals = await getSchedule(
-            streetId: streetId, houseNumber: location.houseNumber);
-        locationsToDisposals[location] = disposals;
-      }
+      final locationsToDisposals = Map.fromIterables(
+          locations,
+          await Future.wait(
+              locations.map((location) => _getSchedulesForLocation(location))));
 
       emit(SchedulesReady(locationsToDisposals));
     }
+  }
+
+  Future<List<WasteDisposalDto>> _getSchedulesForLocation(
+      LocationEntity location) async {
+    final streetId = await resolveCurrentStreetId(location: location);
+    return await getSchedule(
+        streetId: streetId, houseNumber: location.houseNumber);
   }
 
   @override
