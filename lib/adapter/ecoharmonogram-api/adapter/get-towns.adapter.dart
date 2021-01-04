@@ -1,22 +1,21 @@
-import 'dart:convert';
+import 'dart:io';
 
 import 'package:ecoroutine/adapter/ecoharmonogram-api/dto/dto.dart'
     show TownDto;
-import 'package:ecoroutine/config/config.dart' show ECOHARMONOGRAM_API_BASE_URL;
-import "package:http/http.dart" as http;
+import 'package:ecoroutine/adapter/ecoharmonogram-api/helper/helper.dart';
 
 Future<List<TownDto>> getTowns({String townNamePattern}) async {
-  final response = await http.post(
-    "$ECOHARMONOGRAM_API_BASE_URL?action=getTowns&townName=$townNamePattern",
-  );
-  if (response.statusCode != 200) {
-    return [];
+  try {
+    final towns = (await ecoharmonogramRequest(
+        {"action": "getTowns", "townName": townNamePattern}))["towns"];
+    return List<TownDto>.from(towns.map((town) => TownDto(
+        id: town["id"],
+        name: town["name"],
+        district: town["district"],
+        province: town["province"])));
+  } on SocketException {
+    rethrow;
+  } on Exception {
+    return const [];
   }
-  final Map payload = json.decode(utf8.decode(response.bodyBytes));
-  final List towns = payload["towns"];
-  return List<TownDto>.from(towns.map((town) => TownDto(
-      id: town["id"],
-      name: town["name"],
-      district: town["district"],
-      province: town["province"])));
 }
