@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:collection/collection.dart';
 import 'package:ecoroutine/adapter/adapter.dart';
 import 'package:ecoroutine/domain/location/entity/entity.dart';
 import 'package:ecoroutine/presentation/screen/locations/bloc/bloc.dart';
