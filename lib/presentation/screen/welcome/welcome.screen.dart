@@ -1,3 +1,5 @@
+import 'package:ecoroutine/presentation/screen/add_location/add-location.screen.dart';
+import 'package:ecoroutine/presentation/screen/locations/locations.screen.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -5,12 +7,20 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
+    return Scaffold(
+      body: Container(
         width: double.infinity,
         height: double.infinity,
         child: Center(
-          child: Text("No locations"),
+          child: FlatButton(
+            child: Text("Add first location"),
+            onPressed: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => LocationsScreen()));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => AddLocationScreen()));
+            },
+          ),
         ),
       ),
     );

@@ -7,6 +7,7 @@ import 'package:ecoroutine/presentation/screen/locations/locations.screen.dart';
 import 'package:ecoroutine/presentation/screen/schedules/bloc/bloc.dart';
 import 'package:ecoroutine/presentation/screen/schedules/bloc/page.bloc.dart';
 import 'package:ecoroutine/presentation/screen/schedules/widget/widget.dart';
+import 'package:ecoroutine/presentation/screen/welcome/welcome.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -43,6 +44,8 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
             return _buildNoLocations();
           }
           return _buildScaffold(state.locationsToDisposals);
+        } else if (state is NoLocations) {
+          return WelcomeScreen();
         } else {
           return _buildLoader();
         }
@@ -100,8 +103,7 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
             )),
         body: BlocListener<PageCubit, int>(
           listener: (context, pageIndex) {
-            controller.animateToPage(pageIndex,
-                duration: Duration(milliseconds: 100), curve: Curves.linear);
+            controller.jumpToPage(pageIndex);
             _activeTitle.value =
                 locationsToDisposals.entries.toList()[pageIndex].key;
           },
