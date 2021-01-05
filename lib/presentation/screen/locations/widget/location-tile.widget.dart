@@ -4,13 +4,14 @@ import 'package:google_fonts/google_fonts.dart';
 
 class LocationTile extends StatelessWidget {
   final LocationEntity location;
+  final VoidCallback onTap;
 
-  const LocationTile({this.location});
+  const LocationTile({this.location, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-        onTap: () {},
+        onTap: onTap,
         contentPadding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
         title: Text(
           location.name,

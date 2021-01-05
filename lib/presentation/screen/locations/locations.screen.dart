@@ -1,8 +1,8 @@
-import 'package:ecoroutine/domain/location/entity/entity.dart';
 import 'package:ecoroutine/domain/location/repository/repository.dart';
 import 'package:ecoroutine/presentation/screen/add_location/add-location.screen.dart';
 import 'package:ecoroutine/presentation/screen/locations/bloc/bloc.dart';
 import 'package:ecoroutine/presentation/screen/locations/widget/widget.dart';
+import 'package:ecoroutine/presentation/screen/schedules/bloc/page.bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,28 +40,30 @@ class _LocationsScreenState extends State<LocationsScreen> {
           if (state is LocationListReady) {
             return ListView(
               children: state.locations
-                  .map((LocationEntity location) => Dismissible(
+                  .asMap()
+                  .entries
+                  .map((location) => Dismissible(
                         confirmDismiss: (DismissDirection direction) async {
                           if (direction == DismissDirection.endToStart) {
                             final deletionConfirmed =
                                 await _showConfirmDeleteDialog(
-                                        context, location.name) ??
+                                        context, location.value.name) ??
                                     false;
                             if (deletionConfirmed) {
-                              await locationDao.delete(location.id);
+                              await locationDao.delete(location.value.id);
                               context
                                   .read<LocationListCubit>()
                                   .reloadLocations();
                             }
                             return deletionConfirmed;
                           } else {
-                            final updatedName =
-                                await _showEditDialog(context, location.name);
+                            final updatedName = await _showEditDialog(
+                                context, location.value.name);
                             if (updatedName == null) {
                               return false;
                             } else {
-                              await locationDao
-                                  .update(location.copyWith(name: updatedName));
+                              await locationDao.update(
+                                  location.value.copyWith(name: updatedName));
                               context
                                   .read<LocationListCubit>()
                                   .reloadLocations();
@@ -102,8 +104,14 @@ class _LocationsScreenState extends State<LocationsScreen> {
                                     width: 36,
                                   ),
                                 ])),
-                        key: ValueKey(location.id),
-                        child: LocationTile(location: location),
+                        key: ValueKey(location.value.id),
+                        child: LocationTile(
+                          location: location.value,
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            context.read<PageCubit>().switchPage(location.key);
+                          },
+                        ),
                         onDismissed: (direction) {},
                       ))
                   .toList(),

@@ -1,5 +1,6 @@
 import 'package:ecoroutine/config/config.dart';
 import 'package:ecoroutine/presentation/screen/schedules/bloc/bloc.dart';
+import 'package:ecoroutine/presentation/screen/schedules/bloc/page.bloc.dart';
 import 'package:ecoroutine/presentation/screen/schedules/schedules.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +16,9 @@ class App extends StatelessWidget {
               create: (context) => LocationListCubit()..reloadLocations()),
           BlocProvider<SchedulesCubit>(
               create: (context) =>
-                  SchedulesCubit(BlocProvider.of<LocationListCubit>(context)))
+                  SchedulesCubit(BlocProvider.of<LocationListCubit>(context))),
+          BlocProvider<PageCubit>(
+              create: (context) => PageCubit()..switchPage(0))
         ],
         child: MaterialApp(
             debugShowCheckedModeBanner: false,

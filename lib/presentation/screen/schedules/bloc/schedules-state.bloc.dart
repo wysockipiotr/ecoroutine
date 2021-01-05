@@ -13,6 +13,10 @@ class SchedulesLoading extends SchedulesState {
   const SchedulesLoading();
 }
 
+class NoLocations extends SchedulesState {
+  const NoLocations();
+}
+
 class SchedulesReady extends SchedulesState {
   final Map<LocationEntity, List<WasteDisposalDto>> locationsToDisposals;
 

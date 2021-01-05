@@ -25,27 +25,36 @@ class SchedulesCubit extends Cubit<SchedulesState> {
 
   Future<void> onSchedulesRequested() async {
     if (locationListBloc.state is LocationListReady) {
-      final locations = (locationListBloc.state as LocationListReady).locations;
       emit(SchedulesLoading());
+      final locations = (locationListBloc.state as LocationListReady).locations;
 
-      final locationsToDisposals = Map.fromIterables(
-          locations,
-          await Future.wait(
-              locations.map((location) => _getSchedulesForLocation(location))));
+      if (locations.isEmpty) {
+        emit(NoLocations());
+      } else {
+        final locationsToDisposals = Map.fromIterables(
+            locations,
+            await Future.wait(locations
+                .map((location) => _getSchedulesForLocation(location))));
 
-      emit(SchedulesReady(locationsToDisposals));
+        emit(SchedulesReady(locationsToDisposals));
+      }
     }
   }
 
   Future<void> onRefreshRequested() async {
     if (locationListBloc.state is LocationListReady) {
       final locations = (locationListBloc.state as LocationListReady).locations;
-      final locationsToDisposals = Map.fromIterables(
-          locations,
-          await Future.wait(
-              locations.map((location) => _getSchedulesForLocation(location))));
 
-      emit(SchedulesReady(locationsToDisposals));
+      if (locations.isEmpty) {
+        emit(NoLocations());
+      } else {
+        final locationsToDisposals = Map.fromIterables(
+            locations,
+            await Future.wait(locations
+                .map((location) => _getSchedulesForLocation(location))));
+
+        emit(SchedulesReady(locationsToDisposals));
+      }
     }
   }
 
