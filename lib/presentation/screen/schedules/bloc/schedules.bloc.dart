@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
 import 'package:ecoroutine/adapter/adapter.dart';
@@ -31,7 +32,7 @@ class SchedulesCubit extends Cubit<SchedulesState> {
       if (locations.isEmpty) {
         emit(NoLocations());
       } else {
-        final locationsToDisposals = Map.fromIterables(
+        final locationsToDisposals = LinkedHashMap.fromIterables(
             locations,
             await Future.wait(locations
                 .map((location) => _getSchedulesForLocation(location))));
@@ -48,7 +49,7 @@ class SchedulesCubit extends Cubit<SchedulesState> {
       if (locations.isEmpty) {
         emit(NoLocations());
       } else {
-        final locationsToDisposals = Map.fromIterables(
+        final locationsToDisposals = LinkedHashMap.fromIterables(
             locations,
             await Future.wait(locations
                 .map((location) => _getSchedulesForLocation(location))));

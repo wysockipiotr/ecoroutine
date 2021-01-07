@@ -10,14 +10,13 @@ class SchedulesAppBar extends StatelessWidget with PreferredSizeWidget {
   final ValueNotifier<LocationEntity> activeLocation;
 
   SchedulesAppBar({Key key, this.activeLocation})
-      : preferredSize = Size.fromHeight(75),
+      : preferredSize = const Size.fromHeight(75),
         super(key: key);
 
   @override
   Widget build(BuildContext context) => AppBar(
       backgroundColor: Theme.of(context).canvasColor,
       elevation: 1,
-      // toolbarHeight: 75,
       centerTitle: true,
       title: InkWell(
         borderRadius: BorderRadius.circular(6.0),
@@ -54,8 +53,5 @@ class SchedulesAppBar extends StatelessWidget with PreferredSizeWidget {
                 style: GoogleFonts.monda().copyWith(fontSize: 12.0)),
           ],
         ),
-
-        // child: Text(value,
-        //     style: GoogleFonts.monda(), key: ValueKey<String>(value)
       );
 }

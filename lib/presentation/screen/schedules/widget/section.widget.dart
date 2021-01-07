@@ -20,7 +20,7 @@ class Section extends StatelessWidget {
             style: GoogleFonts.monda(
                 textStyle: Theme.of(context).textTheme.caption),
           ),
-          padding: EdgeInsets.only(left: 12.0, top: 16.0, bottom: 12.0),
+          padding: const EdgeInsets.only(left: 12.0, top: 16.0, bottom: 12.0),
         ),
         GridView(
           children: tiles,

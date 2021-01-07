@@ -2,23 +2,21 @@ import 'dart:async';
 
 import 'package:ecoroutine/adapter/adapter.dart';
 import 'package:ecoroutine/adapter/ecoharmonogram-api/dto/dto.dart';
+import 'package:ecoroutine/config/app.config.dart';
 import 'package:ecoroutine/domain/location/entity/location.entity.dart';
-import 'package:ecoroutine/presentation/screen/locations/locations.screen.dart';
 import 'package:ecoroutine/presentation/screen/schedules/bloc/bloc.dart';
 import 'package:ecoroutine/presentation/screen/schedules/bloc/page.bloc.dart';
 import 'package:ecoroutine/presentation/screen/schedules/widget/app-bar.widget.dart';
 import 'package:ecoroutine/presentation/screen/schedules/widget/widget.dart';
-import 'package:ecoroutine/presentation/screen/welcome/welcome.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
-
-extension NthKey<K, V> on Map {
-  K nthKey<K, V>(int index) => entries.toList()[index].key;
-}
+import 'package:ecoroutine/utility/utility.dart' show NthKey;
 
 class SchedulesScreen extends StatefulWidget {
+  final Map<LocationEntity, List<WasteDisposalDto>> locationsToDisposals;
+
+  SchedulesScreen({this.locationsToDisposals});
+
   @override
   _SchedulesScreenState createState() => _SchedulesScreenState();
 }
@@ -35,28 +33,16 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<SchedulesCubit, SchedulesState>(
-      listener: (context, state) {
-        if (state is SchedulesReady) {
-          _refreshCompleter?.complete();
-          _refreshCompleter = Completer<void>();
-        }
-      },
-      builder: (context, state) {
-        if (state is SchedulesReady) {
-          if (state.locationsToDisposals.isEmpty) {
-            return _buildNoLocations();
+  Widget build(BuildContext context) =>
+      BlocListener<SchedulesCubit, SchedulesState>(
+        listener: (context, state) {
+          if (state is SchedulesReady) {
+            _refreshCompleter?.complete();
+            _refreshCompleter = Completer<void>();
           }
-          return _buildScaffold(state.locationsToDisposals);
-        } else if (state is NoLocations) {
-          return WelcomeScreen();
-        } else {
-          return _buildLoader();
-        }
-      },
-    );
-  }
+        },
+        child: _buildScaffold(widget.locationsToDisposals),
+      );
 
   Widget _buildScaffold(
       Map<LocationEntity, List<WasteDisposalDto>> locationsToDisposals) {
@@ -87,38 +73,15 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
         ));
   }
 
-  Widget _buildNoLocations() => Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).canvasColor,
-          centerTitle: true,
-          title: GestureDetector(
-            onTap: () async {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => LocationsScreen()));
-            },
-            child: Text("No locations", style: GoogleFonts.monda()),
-          ),
-        ),
-        body: Container(),
-      );
-
-  Widget _buildLoader() => Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-
   ListView _buildSectionList(disposals) {
     final disposalsByDay = groupByDate(disposals);
-
     return ListView.builder(
       itemCount: disposalsByDay.length,
       itemBuilder: (context, index) {
         return Container(
-            margin: EdgeInsets.only(left: 8.0, right: 8.0, bottom: 16.0),
+            margin: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 16.0),
             child: Section(
-              title: DateFormat("d MMMM yyyy")
-                  .format(disposalsByDay.keys.toList()[index]),
+              title: dateFormat.format(disposalsByDay.keys.toList()[index]),
               tiles: disposalsByDay[disposalsByDay.keys.toList()[index]]
                   .map((WasteDisposalDto disposal) =>
                       CategoryTile(disposal: disposal))

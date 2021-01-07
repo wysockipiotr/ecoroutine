@@ -1,8 +1,8 @@
 import 'package:ecoroutine/domain/location/repository/repository.dart';
-import 'package:ecoroutine/presentation/screen/add_location/add-location.screen.dart';
 import 'package:ecoroutine/presentation/screen/locations/bloc/bloc.dart';
 import 'package:ecoroutine/presentation/screen/locations/widget/widget.dart';
 import 'package:ecoroutine/presentation/screen/schedules/bloc/page.bloc.dart';
+import 'package:ecoroutine/presentation/screen/screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

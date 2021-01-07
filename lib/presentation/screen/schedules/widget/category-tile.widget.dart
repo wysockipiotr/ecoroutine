@@ -30,7 +30,7 @@ class CategoryTile extends StatelessWidget {
               height: 4.0,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: AutoSizeText(
                 this.disposal.name.sentenceCase,
                 maxLines: 3,
