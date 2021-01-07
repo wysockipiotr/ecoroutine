@@ -81,8 +81,8 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
         return Container(
             margin: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 16.0),
             child: Section(
-              title: dateFormat.format(disposalsByDay.keys.toList()[index]),
-              tiles: disposalsByDay[disposalsByDay.keys.toList()[index]]
+              title: _formatDate(disposalsByDay.nthKey(index)),
+              tiles: disposalsByDay[disposalsByDay.nthKey(index)]
                   .map((WasteDisposalDto disposal) =>
                       CategoryTile(disposal: disposal))
                   .toList(),
@@ -90,5 +90,16 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
       },
       shrinkWrap: true,
     );
+  }
+
+  static String _formatDate(DateTime datetime) {
+    final now = DateTime.now();
+    if (datetime == DateTime(now.year, now.month, now.day)) {
+      return "Today";
+    } else if (datetime == DateTime(now.year, now.month, now.day + 1)) {
+      return "Tomorrow";
+    } else {
+      return dateFormat.format(datetime);
+    }
   }
 }
