@@ -6,12 +6,17 @@ import 'package:ecoroutine/domain/location/entity/location.entity.dart';
 import 'package:ecoroutine/presentation/screen/locations/locations.screen.dart';
 import 'package:ecoroutine/presentation/screen/schedules/bloc/bloc.dart';
 import 'package:ecoroutine/presentation/screen/schedules/bloc/page.bloc.dart';
+import 'package:ecoroutine/presentation/screen/schedules/widget/app-bar.widget.dart';
 import 'package:ecoroutine/presentation/screen/schedules/widget/widget.dart';
 import 'package:ecoroutine/presentation/screen/welcome/welcome.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+
+extension NthKey<K, V> on Map {
+  K nthKey<K, V>(int index) => entries.toList()[index].key;
+}
 
 class SchedulesScreen extends StatefulWidget {
   @override
@@ -20,7 +25,7 @@ class SchedulesScreen extends StatefulWidget {
 
 class _SchedulesScreenState extends State<SchedulesScreen> {
   Completer<void> _refreshCompleter;
-  ValueNotifier<LocationEntity> _activeTitle =
+  ValueNotifier<LocationEntity> _activeLocation =
       ValueNotifier<LocationEntity>(null);
 
   @override
@@ -56,62 +61,19 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
   Widget _buildScaffold(
       Map<LocationEntity, List<WasteDisposalDto>> locationsToDisposals) {
     final controller = PageController(initialPage: 0);
-    _activeTitle.value = locationsToDisposals.entries.toList()[0].key;
+    _activeLocation.value = locationsToDisposals.nthKey(0);
 
     return Scaffold(
-        appBar: AppBar(
-            backgroundColor: Theme.of(context).canvasColor,
-            elevation: 1,
-            toolbarHeight: 75,
-            centerTitle: true,
-            title: InkWell(
-              borderRadius: BorderRadius.circular(6.0),
-              onTap: () async {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => LocationsScreen()));
-              },
-              child: ValueListenableBuilder(
-                valueListenable: _activeTitle,
-                builder: (context, value, _) => AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 200),
-                  transitionBuilder:
-                      (Widget child, Animation<double> animation) {
-                    return ScaleTransition(child: child, scale: animation);
-                  },
-                  switchInCurve: Curves.easeOut,
-                  switchOutCurve: Curves.easeIn,
-                  child: Padding(
-                    key: ValueKey<LocationEntity>(value),
-                    padding: const EdgeInsets.all(6.0),
-                    child: Column(
-                      children: <Widget>[
-                        Text(value.name,
-                            style:
-                                GoogleFonts.monda().copyWith(fontSize: 16.0)),
-                        Text(
-                            "${value.town.name}, ${value.streetName} ${value.houseNumber}",
-                            style:
-                                GoogleFonts.monda().copyWith(fontSize: 12.0)),
-                      ],
-                    ),
-
-                    // child: Text(value,
-                    //     style: GoogleFonts.monda(), key: ValueKey<String>(value)
-                  ),
-                ),
-              ),
-            )),
+        appBar: SchedulesAppBar(activeLocation: _activeLocation),
         body: BlocListener<PageCubit, int>(
           listener: (context, pageIndex) {
             controller.jumpToPage(pageIndex);
-            _activeTitle.value =
-                locationsToDisposals.entries.toList()[pageIndex].key;
+            _activeLocation.value = locationsToDisposals.nthKey(pageIndex);
           },
           child: PageView(
             controller: controller,
             onPageChanged: (index) {
-              _activeTitle.value =
-                  locationsToDisposals.entries.toList()[index].key;
+              _activeLocation.value = locationsToDisposals.nthKey(index);
             },
             children: locationsToDisposals.values
                 .map((List<WasteDisposalDto> disposals) => RefreshIndicator(
