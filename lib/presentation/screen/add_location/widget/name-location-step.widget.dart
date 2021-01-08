@@ -1,5 +1,5 @@
+import 'package:ecoroutine/bloc/schedules.bloc.dart';
 import 'package:ecoroutine/domain/location/entity/entity.dart';
-import 'package:ecoroutine/domain/location/repository/repository.dart';
 import 'package:ecoroutine/presentation/screen/add_location/bloc/bloc.dart';
 import 'package:ecoroutine/presentation/screen/add_location/enum/enum.dart';
 import 'package:flutter/material.dart';
@@ -31,22 +31,24 @@ class _NameLocationStepState extends State<NameLocationStep> {
                   prefixIcon: Icon(Icons.home),
                   filled: true),
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             RaisedButton.icon(
                 onPressed: () async {
                   if (_controller.text.isNotEmpty) {
-                    await LocationRepository().add(LocationEntity(
-                        name: _controller.text,
-                        town: state.selectedTown,
-                        streetName: state.streetName,
-                        houseNumber: state.selectedHouseNumber,
-                        sides: state.sides,
-                        group: state.group));
+                    await context.read<SchedulesCubit>().addLocation(
+                        LocationEntity(
+                            name: _controller.text,
+                            town: state.selectedTown,
+                            streetName: state.streetName,
+                            houseNumber: state.selectedHouseNumber,
+                            sides: state.sides,
+                            group: state.group));
                     Navigator.of(context).pop();
+                    // TODO: Check why this is invisible
                     Scaffold.of(context).showSnackBar(SnackBar(
-                      duration: Duration(seconds: 1),
+                      duration: const Duration(seconds: 1),
                       content: Text(
                           "Location ${_controller.text} has been successfully saved",
                           style:
@@ -56,8 +58,8 @@ class _NameLocationStepState extends State<NameLocationStep> {
                   }
                 },
                 color: Theme.of(context).primaryColor,
-                icon: Icon(Icons.save_alt),
-                label: Text("Save"))
+                icon: const Icon(Icons.save_alt),
+                label: const Text("Save"))
           ],
         );
       } else {

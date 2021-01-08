@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:ecoroutine/adapter/adapter.dart';
 import 'package:ecoroutine/adapter/ecoharmonogram-api/dto/dto.dart';
+import 'package:ecoroutine/bloc/schedules.bloc.dart';
 import 'package:ecoroutine/config/app.config.dart';
 import 'package:ecoroutine/domain/location/entity/location.entity.dart';
-import 'package:ecoroutine/presentation/screen/schedules/bloc/bloc.dart';
 import 'package:ecoroutine/presentation/screen/schedules/bloc/page.bloc.dart';
 import 'package:ecoroutine/presentation/screen/schedules/widget/app-bar.widget.dart';
 import 'package:ecoroutine/presentation/screen/schedules/widget/widget.dart';
@@ -35,7 +35,7 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
   @override
   Widget build(BuildContext context) =>
       BlocListener<SchedulesCubit, SchedulesState>(
-        listener: (context, state) {
+        listener: (ctx, state) {
           if (state is SchedulesReady) {
             _refreshCompleter?.complete();
             _refreshCompleter = Completer<void>();
@@ -51,11 +51,27 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
 
     return Scaffold(
         appBar: SchedulesAppBar(activeLocation: _activeLocation),
-        body: BlocListener<PageCubit, int>(
-          listener: (context, pageIndex) {
-            controller.jumpToPage(pageIndex);
-            _activeLocation.value = locationsToDisposals.nthKey(pageIndex);
-          },
+        body: MultiBlocListener(
+          listeners: [
+            BlocListener<PageCubit, int>(
+              listener: (context, pageIndex) {
+                controller.jumpToPage(pageIndex);
+                _activeLocation.value = locationsToDisposals.nthKey(pageIndex);
+              },
+            ),
+            BlocListener<SchedulesCubit, SchedulesState>(
+              listener: (context, state) {
+                if (state is SchedulesError) {
+                  _refreshCompleter?.complete();
+                  _refreshCompleter = Completer<void>();
+                  Scaffold.of(context).showSnackBar(SnackBar(
+                    content: Text("No internet connection 🌎"),
+                    action: null,
+                  ));
+                }
+              },
+            ),
+          ],
           child: PageView(
             controller: controller,
             onPageChanged: (index) {
@@ -65,7 +81,7 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
                 .map((List<WasteDisposalDto> disposals) => RefreshIndicator(
                     child: _buildSectionList(disposals),
                     onRefresh: () async {
-                      context.read<SchedulesCubit>().onRefreshRequested();
+                      context.read<SchedulesCubit>().refresh();
                       return _refreshCompleter.future;
                     }))
                 .toList(),

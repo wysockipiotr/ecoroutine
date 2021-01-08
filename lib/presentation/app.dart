@@ -1,22 +1,19 @@
+import 'package:ecoroutine/bloc/schedules.bloc.dart';
 import 'package:ecoroutine/config/config.dart';
-import 'package:ecoroutine/presentation/screen/schedules/bloc/bloc.dart';
 import 'package:ecoroutine/presentation/screen/schedules/bloc/page.bloc.dart';
 import 'package:ecoroutine/presentation/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'screen/locations/bloc/bloc.dart';
+// import 'screen/locations/bloc/bloc.dart';
 
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider<LocationListCubit>(
-              create: (context) => LocationListCubit()..reloadLocations()),
           BlocProvider<SchedulesCubit>(
-              create: (context) =>
-                  SchedulesCubit(BlocProvider.of<LocationListCubit>(context))),
+              create: (context) => SchedulesCubit()..reload()),
           BlocProvider<PageCubit>(
               create: (context) => PageCubit()..switchPage(0))
         ],
@@ -31,15 +28,19 @@ class App extends StatelessWidget {
                 visualDensity: VisualDensity.adaptivePlatformDensity,
                 textSelectionHandleColor: Colors.grey),
             home: BlocBuilder<SchedulesCubit, SchedulesState>(
-              builder: (context, state) {
-                if (state is SchedulesReady) {
-                  if (state.locationsToDisposals.isEmpty) {
+              buildWhen: (previous, next) => !(next is SchedulesError),
+              builder: (context, schedulesState) {
+                if (schedulesState is SchedulesReady) {
+                  if (schedulesState.locationsToDisposals.isEmpty) {
                     return WelcomeScreen();
                   }
                   return SchedulesScreen(
-                      locationsToDisposals: state.locationsToDisposals);
-                } else if (state is NoLocations) {
+                      locationsToDisposals:
+                          schedulesState.locationsToDisposals);
+                } else if (schedulesState is NoLocations) {
                   return WelcomeScreen();
+                } else if (SchedulesState is SchedulesError) {
+                  return LoadingCurtainScreen();
                 } else {
                   return LoadingCurtainScreen();
                 }
