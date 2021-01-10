@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:ecoroutine/domain/location/location.dart';
 import 'package:ecoroutine/presentation/screen/locations/locations.screen.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +19,7 @@ class SchedulesAppBar extends StatelessWidget with PreferredSizeWidget {
   Widget build(BuildContext context) => AppBar(
       backgroundColor: Theme.of(context).canvasColor,
       elevation: 1,
+      toolbarHeight: 75,
       centerTitle: true,
       title: InkWell(
         borderRadius: BorderRadius.circular(6.0),
@@ -50,7 +53,7 @@ class SchedulesAppBar extends StatelessWidget with PreferredSizeWidget {
                 style: GoogleFonts.monda().copyWith(fontSize: 16.0)),
             Text(
                 "${location.town.name}, ${location.streetName} ${location.houseNumber}",
-                style: GoogleFonts.monda().copyWith(fontSize: 12.0)),
+                style: GoogleFonts.monda().copyWith(fontSize: 12.0))
           ],
         ),
       );
