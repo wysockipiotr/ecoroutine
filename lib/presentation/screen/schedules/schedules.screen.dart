@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:ecoroutine/adapter/adapter.dart';
 import 'package:ecoroutine/adapter/ecoharmonogram-api/dto/dto.dart';
-import 'package:ecoroutine/bloc/schedules.bloc.dart';
+import 'package:ecoroutine/bloc/bloc.dart';
 import 'package:ecoroutine/config/app.config.dart';
 import 'package:ecoroutine/domain/location/entity/location.entity.dart';
 import 'package:ecoroutine/presentation/screen/schedules/bloc/page.bloc.dart';

@@ -1,11 +1,9 @@
-import 'package:ecoroutine/bloc/schedules.bloc.dart';
+import 'package:ecoroutine/bloc/schedules/schedules.dart';
 import 'package:ecoroutine/config/config.dart';
 import 'package:ecoroutine/presentation/screen/schedules/bloc/page.bloc.dart';
 import 'package:ecoroutine/presentation/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-// import 'screen/locations/bloc/bloc.dart';
 
 class App extends StatelessWidget {
   @override

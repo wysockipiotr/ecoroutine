@@ -1,4 +1,4 @@
-import 'package:ecoroutine/bloc/schedules.bloc.dart';
+import 'package:ecoroutine/bloc/bloc.dart';
 import 'package:ecoroutine/domain/location/entity/entity.dart';
 import 'package:ecoroutine/presentation/screen/add_location/bloc/bloc.dart';
 import 'package:ecoroutine/presentation/screen/add_location/enum/enum.dart';
