@@ -78,6 +78,8 @@ class _LocationsScreenState extends State<LocationsScreen> {
                   });
             }).toList(),
           );
+        } else if (state is NoLocations) {
+          return Center(child: const Text("No locations"));
         } else {
           return const LinearProgressIndicator();
         }

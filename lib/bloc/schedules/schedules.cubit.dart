@@ -20,14 +20,38 @@ class SchedulesCubit extends Cubit<SchedulesState> {
     await reload();
   }
 
-  editLocation(LocationEntity location) async {
-    await locationRepository.update(location);
-    await reload();
+  editLocation(LocationEntity updatedLocation) async {
+    if (state is SchedulesReady) {
+      final locationsToDisposals =
+          (state as SchedulesReady).locationsToDisposals;
+      emit(SchedulesLoading());
+      await locationRepository.update(updatedLocation);
+      final updatedLocationsToDisposals = LinkedHashMap.fromEntries(
+          locationsToDisposals.entries.map((locationToDisposal) {
+        if (locationToDisposal.key.id == updatedLocation.id) {
+          return MapEntry(updatedLocation, locationToDisposal.value);
+        }
+        return locationToDisposal;
+      }));
+      emit(SchedulesReady(updatedLocationsToDisposals));
+    }
   }
 
-  deleteLocation(LocationEntity location) async {
-    await locationRepository.delete(location.id);
-    await reload();
+  deleteLocation(LocationEntity deletedLocation) async {
+    if (state is SchedulesReady) {
+      final locationsToDisposals =
+          (state as SchedulesReady).locationsToDisposals;
+      emit(SchedulesLoading());
+      await locationRepository.delete(deletedLocation.id);
+      final updatedLocationsToDisposals = LinkedHashMap.fromEntries(
+          locationsToDisposals.entries.where((locationToDisposal) =>
+              locationToDisposal.key.id != deletedLocation.id));
+      if (updatedLocationsToDisposals.isEmpty) {
+        emit(NoLocations());
+      } else {
+        emit(SchedulesReady(updatedLocationsToDisposals));
+      }
+    }
   }
 
   refresh() async {
