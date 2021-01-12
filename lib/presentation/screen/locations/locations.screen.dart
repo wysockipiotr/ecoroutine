@@ -51,8 +51,8 @@ class _LocationsScreenState extends State<LocationsScreen> {
               return LocationTile(
                   location: location,
                   onTap: () {
-                    Navigator.of(context).pushReplacementNamed(
-                        SchedulesScreen.RouteName,
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        SchedulesScreen.RouteName, (_) => true,
                         arguments: index);
                   },
                   onEdit: () async {

@@ -20,7 +20,6 @@ class SchedulesAppBar extends StatelessWidget with PreferredSizeWidget {
   Widget build(BuildContext context) => ValueListenableBuilder(
         valueListenable: elevated,
         builder: (context, elevated, _) => AppBar(
-            // leading: null,
             automaticallyImplyLeading: false,
             backgroundColor: Theme.of(context).canvasColor,
             elevation: elevated ? 1.0 : 0.0,
