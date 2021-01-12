@@ -8,8 +8,7 @@
 </p>
 
 ### About
-**ecoroutine** is an alternative **[ecoharmonogram](http://www.ecoharmonogram.pl/)** client app with a minimalist user interface. The service is available in some of the Polish cities 🇵🇱. This application allows you to be up to date with the dates of disposal of various types of waste. It was developed using Flutter and by reverse engineering requests sent by the original application.
-
+**ecoroutine** is an alternative **[ecoharmonogram](http://www.ecoharmonogram.pl/)** client app with a minimalist user interface. The service is available for some of the Polish cities 🇵🇱. This application allows you to be up to date with the dates of disposal of various types of waste. It was developed using Flutter and by reverse engineering requests sent by the original application. The backend of the original app is publicly available; this is where this client sends requests.
 
 <p float="left" align="center">
   <a href="#"><img src="https://github.com/wysockipiotr/ecoroutine/blob/assets/screenshots/schedules_screen.gif" width="380" /></a>    
@@ -41,6 +40,8 @@ $ <b>flutter run</b>
 - [ ] Periodic notifications
 - [ ] Dynamic theming
 - [ ] Caching
+- [ ] i18n
+- [ ] Locations reordering
 
 ### Notes
 The application has been tested only on Android
