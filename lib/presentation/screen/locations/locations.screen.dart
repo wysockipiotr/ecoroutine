@@ -90,7 +90,14 @@ class _LocationsScreenState extends State<LocationsScreen> {
   _showConfirmDeleteDialog(BuildContext context, String name) {
     AlertDialog alert = AlertDialog(
       title: const Text("Confirm delete"),
-      content: Text("Are you sure you want to permanently delete $name?"),
+      content: RichText(
+          text: TextSpan(
+              text: "Are you sure you want to permanently delete ",
+              style: DefaultTextStyle.of(context).style,
+              children: <TextSpan>[
+            TextSpan(text: name, style: TextStyle(fontWeight: FontWeight.bold)),
+            TextSpan(text: "?"),
+          ])),
       actions: [
         FlatButton(
           child: const Text("Cancel"),
@@ -99,7 +106,7 @@ class _LocationsScreenState extends State<LocationsScreen> {
           },
         ),
         FlatButton(
-          child: const Text("Delete"),
+          child: const Text("Delete", style: TextStyle(color: Colors.red)),
           onPressed: () {
             Navigator.of(context).pop(true);
           },
