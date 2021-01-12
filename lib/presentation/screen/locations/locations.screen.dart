@@ -52,7 +52,7 @@ class _LocationsScreenState extends State<LocationsScreen> {
                   location: location,
                   onTap: () {
                     Navigator.of(context).pushNamedAndRemoveUntil(
-                        SchedulesScreen.RouteName, (_) => true,
+                        SchedulesScreen.RouteName, (route) => false,
                         arguments: index);
                   },
                   onEdit: () async {
