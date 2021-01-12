@@ -9,12 +9,10 @@ class SchedulesAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   final Size preferredSize;
 
-  final ValueChanged<int> onSchedulesPageChange;
   final ValueNotifier<LocationEntity> activeLocation;
   final ValueNotifier<bool> elevated;
 
-  SchedulesAppBar(
-      {Key key, this.activeLocation, this.onSchedulesPageChange, this.elevated})
+  SchedulesAppBar({Key key, this.activeLocation, this.elevated})
       : preferredSize = const Size.fromHeight(75),
         super(key: key);
 

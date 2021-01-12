@@ -14,7 +14,14 @@ class SchedulesState extends Equatable {
 
 class NoLocations extends SchedulesState {}
 
-class SchedulesError extends SchedulesState {}
+class SchedulesError extends SchedulesState {
+  final DateTime lastTry;
+
+  SchedulesError() : lastTry = DateTime.now();
+
+  @override
+  List<Object> get props => [lastTry];
+}
 
 class SchedulesLoading extends SchedulesState {}
 

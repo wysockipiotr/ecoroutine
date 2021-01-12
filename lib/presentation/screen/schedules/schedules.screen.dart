@@ -60,12 +60,6 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
         appBar: SchedulesAppBar(
           activeLocation: _activeLocation,
           elevated: _elevateAppBar,
-          onSchedulesPageChange: (page) {
-            // if (page != null) {
-            //   controller.jumpToPage(page);
-            //   _activeLocation.value = locationsToDisposals.nthKey(page);
-            // }
-          },
         ),
         body: MultiBlocListener(
           listeners: [
@@ -76,8 +70,12 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
                   _refreshCompleter = Completer<void>();
 
                   Scaffold.of(context).showSnackBar(SnackBar(
-                    content: Text("No internet connection 🌎"),
-                    action: null,
+                    content: const Text("No internet connection 🌎"),
+                    duration: const Duration(seconds: 5),
+                    action: SnackBarAction(
+                        label: "Retry",
+                        onPressed: () =>
+                            context.read<SchedulesCubit>().refresh()),
                   ));
                 }
               },
