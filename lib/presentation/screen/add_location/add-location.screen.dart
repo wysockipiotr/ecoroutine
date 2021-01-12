@@ -8,6 +8,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:recase/recase.dart';
 
 class AddLocationScreen extends StatelessWidget {
+  static const RouteName = "/add-location";
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

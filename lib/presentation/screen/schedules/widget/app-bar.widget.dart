@@ -11,31 +11,36 @@ class SchedulesAppBar extends StatelessWidget with PreferredSizeWidget {
 
   final ValueChanged<int> onSchedulesPageChange;
   final ValueNotifier<LocationEntity> activeLocation;
+  final ValueNotifier<bool> elevated;
 
-  SchedulesAppBar({Key key, this.activeLocation, this.onSchedulesPageChange})
+  SchedulesAppBar(
+      {Key key, this.activeLocation, this.onSchedulesPageChange, this.elevated})
       : preferredSize = const Size.fromHeight(75),
         super(key: key);
 
   @override
-  Widget build(BuildContext context) => AppBar(
-      backgroundColor: Theme.of(context).canvasColor,
-      elevation: 1,
-      toolbarHeight: 75,
-      centerTitle: true,
-      title: InkWell(
-        borderRadius: BorderRadius.circular(6.0),
-        onTap: () async {
-          final targetPage = await Navigator.push(context,
-              MaterialPageRoute(builder: (context) => LocationsScreen()));
-          onSchedulesPageChange(targetPage);
-        },
-        child: ValueListenableBuilder(
-          valueListenable: activeLocation,
-          builder: (context, activeLocation, _) => _buildAnimatedSwitcher(
-            child: _buildLocationTitle(activeLocation),
-          ),
-        ),
-      ));
+  Widget build(BuildContext context) => ValueListenableBuilder(
+        valueListenable: elevated,
+        builder: (context, elevated, _) => AppBar(
+            // leading: null,
+            automaticallyImplyLeading: false,
+            backgroundColor: Theme.of(context).canvasColor,
+            elevation: elevated ? 1.0 : 0.0,
+            toolbarHeight: 75,
+            centerTitle: true,
+            title: InkWell(
+              borderRadius: BorderRadius.circular(6.0),
+              onTap: () async {
+                await Navigator.pushNamed(context, LocationsScreen.RouteName);
+              },
+              child: ValueListenableBuilder(
+                valueListenable: activeLocation,
+                builder: (context, activeLocation, _) => _buildAnimatedSwitcher(
+                  child: _buildLocationTitle(activeLocation),
+                ),
+              ),
+            )),
+      );
 
   Widget _buildAnimatedSwitcher({Widget child}) => AnimatedSwitcher(
       duration: const Duration(milliseconds: 200),

@@ -1,7 +1,8 @@
 import 'package:ecoroutine/bloc/bloc.dart';
 import 'package:ecoroutine/domain/location/entity/entity.dart';
+import 'package:ecoroutine/presentation/screen/add_location/add-location.screen.dart';
 import 'package:ecoroutine/presentation/screen/locations/widget/widget.dart';
-import 'package:ecoroutine/presentation/screen/screen.dart';
+import 'package:ecoroutine/presentation/screen/schedules/schedules.screen.dart';
 import 'package:ecoroutine/utility/utility.dart' show MapIndexed;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LocationsScreen extends StatefulWidget {
+  static const RouteName = "/locations";
+
   @override
   _LocationsScreenState createState() => _LocationsScreenState();
 }
@@ -32,8 +35,7 @@ class _LocationsScreenState extends State<LocationsScreen> {
           foregroundColor: Theme.of(context).primaryColor,
           child: const Icon(Icons.add),
           onPressed: () async {
-            await Navigator.push(context,
-                MaterialPageRoute(builder: (context) => AddLocationScreen()));
+            await Navigator.pushNamed(context, AddLocationScreen.RouteName);
           },
         ),
       );
@@ -49,7 +51,9 @@ class _LocationsScreenState extends State<LocationsScreen> {
               return LocationTile(
                   location: location,
                   onTap: () {
-                    Navigator.of(context).pop(index);
+                    Navigator.of(context).pushReplacementNamed(
+                        SchedulesScreen.RouteName,
+                        arguments: index);
                   },
                   onEdit: () async {
                     final updatedName =

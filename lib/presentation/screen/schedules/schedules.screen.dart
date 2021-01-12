@@ -12,9 +12,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecoroutine/utility/utility.dart' show NthKey;
 
 class SchedulesScreen extends StatefulWidget {
-  final Map<LocationEntity, List<WasteDisposalDto>> locationsToDisposals;
+  static const RouteName = "/";
 
-  SchedulesScreen({this.locationsToDisposals});
+  final Map<LocationEntity, List<WasteDisposalDto>> locationsToDisposals;
+  final int initialPage;
+
+  SchedulesScreen({this.locationsToDisposals, this.initialPage = 0});
 
   @override
   _SchedulesScreenState createState() => _SchedulesScreenState();
@@ -24,12 +27,17 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
   Completer<void> _refreshCompleter;
   ValueNotifier<LocationEntity> _activeLocation =
       ValueNotifier<LocationEntity>(null);
+  ValueNotifier<bool> _elevateAppBar = ValueNotifier<bool>(false);
 
   @override
   void initState() {
     super.initState();
     _refreshCompleter = Completer<void>();
-    _activeLocation.value = widget.locationsToDisposals.nthKey(0);
+    _activeLocation.value =
+        widget.locationsToDisposals.nthKey(widget.initialPage);
+    _activeLocation.addListener(() {
+      _elevateAppBar.value = false;
+    });
   }
 
   @override
@@ -46,17 +54,17 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
 
   Widget _buildScaffold(
       Map<LocationEntity, List<WasteDisposalDto>> locationsToDisposals) {
-    final controller = PageController(initialPage: 0);
-    // _activeLocation.value = locationsToDisposals.nthKey(0);
+    final controller = PageController(initialPage: widget.initialPage);
 
     return Scaffold(
         appBar: SchedulesAppBar(
           activeLocation: _activeLocation,
+          elevated: _elevateAppBar,
           onSchedulesPageChange: (page) {
-            if (page != null) {
-              controller.jumpToPage(page);
-              _activeLocation.value = locationsToDisposals.nthKey(page);
-            }
+            // if (page != null) {
+            //   controller.jumpToPage(page);
+            //   _activeLocation.value = locationsToDisposals.nthKey(page);
+            // }
           },
         ),
         body: MultiBlocListener(
@@ -79,10 +87,21 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
             controller: controller,
             onPageChanged: (index) {
               _activeLocation.value = locationsToDisposals.nthKey(index);
+              // _elevateAppBar.value = false;
             },
             children: locationsToDisposals.values
                 .map((List<WasteDisposalDto> disposals) => RefreshIndicator(
-                    child: _buildSectionList(disposals),
+                    color: Colors.green,
+                    child: NotificationListener(
+                      child: _buildSectionList(disposals),
+                      onNotification: (Notification notification) {
+                        if (notification is ScrollUpdateNotification) {
+                          _elevateAppBar.value =
+                              notification.metrics.pixels > 8;
+                        }
+                        return false;
+                      },
+                    ),
                     onRefresh: () async {
                       context.read<SchedulesCubit>().refresh();
                       return _refreshCompleter.future;
