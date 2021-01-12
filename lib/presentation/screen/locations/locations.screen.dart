@@ -1,7 +1,6 @@
 import 'package:ecoroutine/bloc/bloc.dart';
 import 'package:ecoroutine/domain/location/entity/entity.dart';
 import 'package:ecoroutine/presentation/screen/locations/widget/widget.dart';
-import 'package:ecoroutine/presentation/screen/schedules/bloc/page.bloc.dart';
 import 'package:ecoroutine/presentation/screen/screen.dart';
 import 'package:ecoroutine/utility/utility.dart' show MapIndexed;
 import 'package:flutter/cupertino.dart';
@@ -15,12 +14,6 @@ class LocationsScreen extends StatefulWidget {
 }
 
 class _LocationsScreenState extends State<LocationsScreen> {
-  @override
-  void initState() {
-    // context.read<Schedule>().reloadLocations();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
@@ -56,8 +49,7 @@ class _LocationsScreenState extends State<LocationsScreen> {
               return LocationTile(
                   location: location,
                   onTap: () {
-                    Navigator.of(context).pop();
-                    context.read<PageCubit>().switchPage(index);
+                    Navigator.of(context).pop(index);
                   },
                   onEdit: () async {
                     final updatedName =

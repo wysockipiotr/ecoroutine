@@ -9,9 +9,10 @@ class SchedulesAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   final Size preferredSize;
 
+  final ValueChanged<int> onSchedulesPageChange;
   final ValueNotifier<LocationEntity> activeLocation;
 
-  SchedulesAppBar({Key key, this.activeLocation})
+  SchedulesAppBar({Key key, this.activeLocation, this.onSchedulesPageChange})
       : preferredSize = const Size.fromHeight(75),
         super(key: key);
 
@@ -24,8 +25,9 @@ class SchedulesAppBar extends StatelessWidget with PreferredSizeWidget {
       title: InkWell(
         borderRadius: BorderRadius.circular(6.0),
         onTap: () async {
-          Navigator.push(context,
+          final targetPage = await Navigator.push(context,
               MaterialPageRoute(builder: (context) => LocationsScreen()));
+          onSchedulesPageChange(targetPage);
         },
         child: ValueListenableBuilder(
           valueListenable: activeLocation,

@@ -5,7 +5,6 @@ import 'package:ecoroutine/adapter/ecoharmonogram-api/dto/dto.dart';
 import 'package:ecoroutine/bloc/bloc.dart';
 import 'package:ecoroutine/config/app.config.dart';
 import 'package:ecoroutine/domain/location/entity/location.entity.dart';
-import 'package:ecoroutine/presentation/screen/schedules/bloc/page.bloc.dart';
 import 'package:ecoroutine/presentation/screen/schedules/widget/app-bar.widget.dart';
 import 'package:ecoroutine/presentation/screen/schedules/widget/widget.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +29,7 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
   void initState() {
     super.initState();
     _refreshCompleter = Completer<void>();
+    _activeLocation.value = widget.locationsToDisposals.nthKey(0);
   }
 
   @override
@@ -47,23 +47,26 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
   Widget _buildScaffold(
       Map<LocationEntity, List<WasteDisposalDto>> locationsToDisposals) {
     final controller = PageController(initialPage: 0);
-    _activeLocation.value = locationsToDisposals.nthKey(0);
+    // _activeLocation.value = locationsToDisposals.nthKey(0);
 
     return Scaffold(
-        appBar: SchedulesAppBar(activeLocation: _activeLocation),
+        appBar: SchedulesAppBar(
+          activeLocation: _activeLocation,
+          onSchedulesPageChange: (page) {
+            if (page != null) {
+              controller.jumpToPage(page);
+              _activeLocation.value = locationsToDisposals.nthKey(page);
+            }
+          },
+        ),
         body: MultiBlocListener(
           listeners: [
-            BlocListener<PageCubit, int>(
-              listener: (context, pageIndex) {
-                controller.jumpToPage(pageIndex);
-                _activeLocation.value = locationsToDisposals.nthKey(pageIndex);
-              },
-            ),
             BlocListener<SchedulesCubit, SchedulesState>(
               listener: (context, state) {
                 if (state is SchedulesError) {
                   _refreshCompleter?.complete();
                   _refreshCompleter = Completer<void>();
+
                   Scaffold.of(context).showSnackBar(SnackBar(
                     content: Text("No internet connection 🌎"),
                     action: null,
